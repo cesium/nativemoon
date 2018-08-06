@@ -12,7 +12,7 @@ event.
 This is a collaborative project alongside the
 [Safira](https://github.com/cesium/safira) backend platform
 and the
-[Moonstone](https://github.ceom/cesium/moonstone) frontend platform.
+[Moonstone](https://github.com/cesium/moonstone) frontend platform.
 
 ## Getting Started
 
