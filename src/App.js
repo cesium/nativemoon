@@ -7,7 +7,7 @@ export default class App extends Component {
     constructor() {
         super();
         this.state = {
-            jwt: ''
+            jwt: '',
         };
         this.newJWT = this.newJWT.bind(this);
         this.deleteJWT = deviceStorage.deleteJWT.bind(this);
@@ -24,12 +24,11 @@ export default class App extends Component {
     render() {
         if (!this.state.jwt) {
             return (
-                <Login putJWT={this.newJWT}/>
+                <Login newJWT={this.newJWT}/>
             );
-        } else {
+        } else
             return (
-                <LoggedIn/>
+                <LoggedIn jwt={this.state.jwt} deleteJWT={this.deleteJWT}/>
             );
-        }
     }
 }
