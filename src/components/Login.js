@@ -24,7 +24,6 @@ export default class Login extends Component {
         }
         else {
             this.setState({error: json.data.error, loading: false});
-            console.log(json);
         }
     }
 
@@ -54,7 +53,7 @@ export default class Login extends Component {
                 <View style={form}>
                     <View style={section}>
                         <Input
-                            placeholder='patron@cesium.pt'
+                            placeholder='youremail@domain'
                             label="Email"
                             value={email}
                             onChangeText={email => this.setState({email})}
@@ -97,6 +96,7 @@ const styles = {
         width: '100%',
         borderTopWidth: 1,
         borderColor: '#ddd',
+        justifyContent: 'center',
     },
     section: {
         flexDirection: 'row',

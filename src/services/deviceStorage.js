@@ -43,4 +43,3 @@ const deviceStorage = {
 };
 
 export default deviceStorage;
-
