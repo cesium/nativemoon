@@ -3,6 +3,7 @@ import {View, Text, Button} from 'react-native';
 import {Input, Loading} from './common';
 import deviceStorage from '../services/deviceStorage';
 import axios from 'axios';
+import Config from 'react-native-config';
 
 export default class Login extends Component {
     constructor(props) {
@@ -28,11 +29,11 @@ export default class Login extends Component {
     }
 
     loginUser() {
-        const API_CALL = 'https://sei19-safira.herokuapp.com/api/auth/sign_in';
+        const URL = Config.API_URL + Config.API_LOGIN;
         const {email, password} = this.state;
         this.setState({error: '', loading: true});
 
-        axios.post(API_CALL, {
+        axios.post(URL, {
             email: email,
             password: password
         })
