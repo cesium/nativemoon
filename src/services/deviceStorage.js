@@ -34,6 +34,7 @@ const deviceStorage = {
           jwt: ""
         });
       });
+      this.forceUpdate();
     } catch (error) {
       console.log("AsyncStorage Error: " + error.message);
     }
