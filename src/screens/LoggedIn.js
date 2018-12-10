@@ -29,7 +29,6 @@ class LoggedIn extends Component {
       })
       .then(res => {
         this.validateJson(res);
-        console.log(this.state.badges);
       })
       .catch(e => {
         this.setState({
@@ -60,6 +59,9 @@ class LoggedIn extends Component {
     return ds >= dbb && ds <= dbe;
   }
 
+  componentWillUnmount() {
+    console.log(this.state);
+  }
   render() {
     if (this.state.qr) {
       return (
@@ -123,6 +125,22 @@ class LoggedIn extends Component {
 
   selectItem(badge) {
     this.setState({ badge: badge.name, badgeId: badge.id });
+  }
+
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#607D8B"
+        }}
+      />
+    );
+  };
+
+  selectItem(badge) {
+    this.setState({ badge: badge });
   }
 }
 

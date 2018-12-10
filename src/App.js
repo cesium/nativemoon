@@ -13,7 +13,10 @@ export default class App extends Component {
     };
     this.newJWT = this.newJWT.bind(this);
     this.deleteJWT = deviceStorage.deleteJWT.bind(this);
-    this.loadJWT = deviceStorage.loadJWT.bind(this);
+  }
+
+  componentWillMount() {
+    deviceStorage.loadJWT();
   }
 
   componentWillMount() {
