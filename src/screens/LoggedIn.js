@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, FlatList, TouchableHighlight } from "react-native";
 import Config from "react-native-config";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ export default class LoggedIn extends Component {
     super(props);
     this.state = {
       badges: [],
+      badge: "",
       loading: false,
       error: ""
     };
@@ -25,7 +26,6 @@ export default class LoggedIn extends Component {
       })
       .then(res => {
         this.validateJson(res);
-        console.log(this.state.badges);
       })
       .catch(e => {
         this.setState({
@@ -57,17 +57,55 @@ export default class LoggedIn extends Component {
     return ds >= dbb && ds <= dbe;
   }
 
+  componentWillUnmount() {
+    console.log(this.state);
+  }
   render() {
     const { error } = this.state;
     const { errorTextStyle } = styles;
 
     return (
       <View>
-        <Text>SEIUM</Text>
+        <Text>BADGES</Text>
+        <FlatList
+          data={this.state.badges}
+          ItemSeparatorComponent={this.FlatListItemSeparator}
+          renderItem={({ item }) => (
+            <TouchableHighlight
+              style={{
+                backgroundColor: "red",
+                height: 60,
+                flexDirection: "row"
+              }}
+            >
+              <Text onPress={this.selectItem.bind(this, item.name)}>
+                {item.description}
+              </Text>
+            </TouchableHighlight>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+
         <Text style={errorTextStyle}>{error}</Text>
         <Button onPress={this.props.deleteJWT} title="Log Out" />
       </View>
     );
+  }
+
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#607D8B"
+        }}
+      />
+    );
+  };
+
+  selectItem(badge) {
+    this.setState({ badge: badge });
   }
 }
 
