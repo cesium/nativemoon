@@ -29,6 +29,7 @@ class LoggedIn extends Component {
       })
       .then(res => {
         this.validateJson(res);
+        console.log(this.state.badges);
       })
       .catch(e => {
         this.setState({
@@ -39,7 +40,6 @@ class LoggedIn extends Component {
   }
 
   validateJson(json) {
-    console.log(json);
     if (json.hasOwnProperty("data")) {
       const badges = this.filterByDate(json.data.data);
       this.setState({ badges: badges });
@@ -61,7 +61,6 @@ class LoggedIn extends Component {
   }
 
   render() {
-<<<<<<< HEAD
     if (this.state.qr) {
       return (
         <Scanner
@@ -119,18 +118,6 @@ class LoggedIn extends Component {
           backgroundColor: "#607D8B"
         }}
       />
-=======
-    const { error } = this.state;
-    const { errorTextStyle } = styles;
-
-    return (
-      <View>
-        <Text>SEIUM</Text>
-        <Text>{this.state.badges}</Text>
-        <Text style={errorTextStyle}>{error}</Text>
-        <Button onPress={this.props.deleteJWT} title="Log Out" />
-      </View>
->>>>>>> 3a03a3d... Fix graddle
     );
   };
 
