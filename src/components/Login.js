@@ -21,6 +21,7 @@ export default class Login extends Component {
   validateJson(json) {
     if (json.data.hasOwnProperty("jwt")) {
       deviceStorage.saveJWT("id_token", json.data.jwt);
+      console.log(json.data.jwt);
       this.props.newJWT(json.data.jwt);
     } else {
       this.setState({ error: json.data.error, loading: false });

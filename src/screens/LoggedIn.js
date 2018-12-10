@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Text, View } from "react-native";
-import deviceStorage from "../services/deviceStorage";
 import Config from "react-native-config";
 import axios from "axios";
 
@@ -18,25 +17,27 @@ export default class LoggedIn extends Component {
   componentDidMount() {
     const URL = Config.API_URL + Config.API_BADGES;
     this.setState({ error: "", loading: true });
-    const jwt = deviceStorage.loadJWT();
-
     axios
-      .post(URL, {
+      .get(URL, {
         headers: {
-          Authorization: "Bearer: " + jwt
+          Authorization: "Bearer " + this.props.jwt
         }
       })
       .then(res => {
         this.validateJson(res);
+        console.log(this.state.badges);
       })
-      .catch(() => {
-        this.setState({ loading: false, error: "Error loading badges :d" });
+      .catch(e => {
+        this.setState({
+          loading: false,
+          error: "Error loading badges"
+        });
       });
   }
 
   validateJson(json) {
-    console.log(json);
     if (json.hasOwnProperty("data")) {
+      const badges = json.data.data;
       //const badges = this.filterByDate(json.data);
       this.setState({ badges: badges });
     } else {
@@ -63,7 +64,6 @@ export default class LoggedIn extends Component {
     return (
       <View>
         <Text>SEIUM</Text>
-        <Text>{this.state.badges}</Text>
         <Text style={errorTextStyle}>{error}</Text>
         <Button onPress={this.props.deleteJWT} title="Log Out" />
       </View>
