@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Button, Text, View, FlatList } from "react-native";
 import Config from "react-native-config";
+import Scanner from "./Scanner";
 import axios from "axios";
 
-export default class LoggedIn extends Component {
+class LoggedIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      qr: false,
       badges: [],
       badge: "",
       loading: false,
@@ -58,34 +60,44 @@ export default class LoggedIn extends Component {
   }
 
   render() {
-    const { error, badge } = this.state;
-    const { errorTextStyle } = styles;
+    if (this.state.qr) {
+      return (
+        <Scanner badge={this.state.badge} deleteJWT={this.props.deleteJWT} />
+      );
+    } else {
+      const { error, badge } = this.state;
+      const { errorTextStyle } = styles;
 
-    return (
-      <View>
-        {badge != "" && <Text>Badge: {badge}</Text>}
-        <FlatList
-          data={this.state.badges}
-          ItemSeparatorComponent={this.FlatListItemSeparator}
-          renderItem={({ item }) => (
-            <View>
-              <Text>{item.description}</Text>
-              <Button
-                onPress={this.selectItem.bind(this, item.name)}
-                title="Escolher badge"
-              />
-            </View>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <Text style={errorTextStyle}>{error}</Text>
-        <Button
-          onPress={this.props.deleteJWT}
-          color="#FF0000"
-          title="Log Out"
-        />
-      </View>
-    );
+      return (
+        <View>
+          {badge != "" && <Text>Badge: {badge}</Text>}
+          <FlatList
+            data={this.state.badges}
+            ItemSeparatorComponent={this.FlatListItemSeparator}
+            renderItem={({ item }) => (
+              <View>
+                <Text>{item.description}</Text>
+                <Button
+                  onPress={this.selectItem.bind(this, item.name)}
+                  title="Escolher badge"
+                />
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          <Text style={errorTextStyle}>{error}</Text>
+          <Button
+            onPress={this.props.deleteJWT}
+            color="#FF0000"
+            title="Log Out"
+          />
+          <Button
+            onPress={() => this.setState({ qr: !this.state.qr })}
+            title="Go"
+          />
+        </View>
+      );
+    }
   }
 
   FlatListItemSeparator = () => {
@@ -113,3 +125,5 @@ const styles = {
     color: "red"
   }
 };
+
+export default LoggedIn;
