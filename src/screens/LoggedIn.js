@@ -59,9 +59,6 @@ class LoggedIn extends Component {
     return ds >= dbb && ds <= dbe;
   }
 
-  componentWillUnmount() {
-    console.log(this.state);
-  }
   render() {
     if (this.state.qr) {
       return (
