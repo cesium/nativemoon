@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Text, View, FlatList, TouchableHighlight } from "react-native";
+import { Button, Text, View, FlatList } from "react-native";
 import Config from "react-native-config";
 import axios from "axios";
 
@@ -57,37 +57,33 @@ export default class LoggedIn extends Component {
     return ds >= dbb && ds <= dbe;
   }
 
-  componentWillUnmount() {
-    console.log(this.state);
-  }
   render() {
-    const { error } = this.state;
+    const { error, badge } = this.state;
     const { errorTextStyle } = styles;
 
     return (
       <View>
-        <Text>BADGES</Text>
+        {badge != "" && <Text>Badge: {badge}</Text>}
         <FlatList
           data={this.state.badges}
           ItemSeparatorComponent={this.FlatListItemSeparator}
           renderItem={({ item }) => (
-            <TouchableHighlight
-              style={{
-                backgroundColor: "red",
-                height: 60,
-                flexDirection: "row"
-              }}
-            >
-              <Text onPress={this.selectItem.bind(this, item.name)}>
-                {item.description}
-              </Text>
-            </TouchableHighlight>
+            <View>
+              <Text>{item.description}</Text>
+              <Button
+                onPress={this.selectItem.bind(this, item.name)}
+                title="Escolher badge"
+              />
+            </View>
           )}
           keyExtractor={(item, index) => index.toString()}
         />
-
         <Text style={errorTextStyle}>{error}</Text>
-        <Button onPress={this.props.deleteJWT} title="Log Out" />
+        <Button
+          onPress={this.props.deleteJWT}
+          color="#FF0000"
+          title="Log Out"
+        />
       </View>
     );
   }

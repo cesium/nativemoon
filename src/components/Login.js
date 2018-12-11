@@ -5,7 +5,7 @@ import deviceStorage from "../services/deviceStorage";
 import axios from "axios";
 import Config from "react-native-config";
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,7 +55,7 @@ export default class Login extends Component {
         <View style={form}>
           <View style={section}>
             <Input
-              placeholder="youremail@domain"
+              placeholder="email@domain"
               label="Email"
               value={email}
               onChangeText={email => this.setState({ email })}
@@ -73,7 +73,7 @@ export default class Login extends Component {
           </View>
 
           {!loading ? (
-            <Button onPress={this.loginUser} title="Login" />
+            <Button onPress={this.loginUser} color="#1E6738" title="Login" />
           ) : (
             <Loading size={"large"} />
           )}
@@ -105,3 +105,5 @@ const styles = {
     color: "red"
   }
 };
+
+export default Login;
