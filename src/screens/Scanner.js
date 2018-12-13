@@ -1,16 +1,17 @@
 "use strict";
 
 import React, { Component } from "react";
-
 import { StyleSheet, Text, TouchableOpacity, Linking } from "react-native";
-
 import QRCodeScanner from "react-native-qrcode-scanner";
 
 class Scanner extends Component {
   onSuccess(e) {
-    Linking.openURL(e.data).catch(err =>
-      console.error("An error occured", err)
+    const URL = Config.API_URL + Config.API_REDEEM;
+    const { badge } = this.props;
+    Linking.openURL(URL + badge).catch(err =>
+      Alert.alert("Badge redeem", "Error!" + { err }, { cancelable: false })
     );
+    Alert.alert("Badge redeem", "Success!", { cancelable: false });
   }
 
   render() {
@@ -19,15 +20,9 @@ class Scanner extends Component {
         onRead={this.onSuccess.bind(this)}
         topContent={
           <Text style={styles.centerText}>
-            Go to{" "}
-            <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
-            your computer and scan the QR code.
+            Badge:
+            <Text style={styles.textBold}>{this.props.badge}</Text>
           </Text>
-        }
-        bottomContent={
-          <TouchableOpacity style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}>OK. Got it!</Text>
-          </TouchableOpacity>
         }
       />
     );
