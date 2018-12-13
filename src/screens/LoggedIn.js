@@ -39,8 +39,8 @@ class LoggedIn extends Component {
 
   validateJson(json) {
     if (json.hasOwnProperty("data")) {
-      const badges = json.data.data;
-      //const badges = this.filterByDate(json.data);
+      //const badges = json.data.data;
+      const badges = this.filterByDate(json.data.data);
       this.setState({ badges: badges });
     } else {
       this.setState({ error: json.data.error });
@@ -52,9 +52,9 @@ class LoggedIn extends Component {
   }
 
   betweenDates(dateBadgeB, dateBadgeE) {
-    let dbb = new Date(dateBadgeB).getDate();
-    let dbe = new Date(dateBadgeE).getDate();
-    let ds = new Date().getDate();
+    const dbb = new Date(dateBadgeB);
+    const dbe = new Date(dateBadgeE);
+    const ds = new Date();
 
     return ds >= dbb && ds <= dbe;
   }
@@ -73,7 +73,7 @@ class LoggedIn extends Component {
           {badge != "" && <Text>Badge: {badge}</Text>}
           <FlatList
             data={this.state.badges}
-            ItemSeparatorComponent={this.FlatListItemSeparator}
+            ItemSeparatorComponent={this.listSeparator}
             renderItem={({ item }) => (
               <View>
                 <Text>{item.description}</Text>
@@ -100,7 +100,7 @@ class LoggedIn extends Component {
     }
   }
 
-  FlatListItemSeparator = () => {
+  listSeparator = () => {
     return (
       <View
         style={{
