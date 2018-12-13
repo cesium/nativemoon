@@ -1,4 +1,4 @@
-import AsyncStorage from "react-native";
+import { AsyncStorage } from "react-native";
 
 const deviceStorage = {
   async saveJWT(key, token) {
