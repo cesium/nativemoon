@@ -29,9 +29,12 @@ export default class App extends Component {
   render() {
     if (this.state.loading) {
       return <Loading size={"large"} />;
-    } else if (!this.state.jwt) {
-      return <Login newJWT={this.newJWT} />;
-    } else if (this.state.jwt)
-      return <LoggedIn jwt={this.state.jwt} deleteJWT={this.deleteJWT} />;
+    } else {
+      if (!this.state.jwt) {
+        return <Login newJWT={this.newJWT} />;
+      } else {
+        return <LoggedIn jwt={this.state.jwt} deleteJWT={this.deleteJWT} />;
+      }
+    }
   }
 }

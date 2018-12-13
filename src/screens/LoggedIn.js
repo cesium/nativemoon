@@ -39,8 +39,8 @@ class LoggedIn extends Component {
 
   validateJson(json) {
     if (json.hasOwnProperty("data")) {
-      //const badges = json.data.data;
-      const badges = this.filterByDate(json.data.data);
+      const badges = json.data.data;
+      //const badges = this.filterByDate(json.data.data);
       this.setState({ badges: badges });
     } else {
       this.setState({ error: json.data.error });
@@ -70,17 +70,21 @@ class LoggedIn extends Component {
 
       return (
         <View>
-          {badge != "" && <Text>Badge: {badge}</Text>}
+          {badge != "" && (
+            <View>
+              <Text onPress={() => this.setState({ qr: !this.state.qr })}>
+                Badge: {badge} (click to go)
+              </Text>
+            </View>
+          )}
           <FlatList
             data={this.state.badges}
             ItemSeparatorComponent={this.listSeparator}
             renderItem={({ item }) => (
               <View>
-                <Text>{item.description}</Text>
-                <Button
-                  onPress={this.selectItem.bind(this, item.name)}
-                  title="Escolher badge"
-                />
+                <Text onPress={this.selectItem.bind(this, item.name)}>
+                  {item.description}
+                </Text>
               </View>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -90,10 +94,6 @@ class LoggedIn extends Component {
             onPress={this.props.deleteJWT}
             color="#FF0000"
             title="Log Out"
-          />
-          <Button
-            onPress={() => this.setState({ qr: !this.state.qr })}
-            title="Go"
           />
         </View>
       );
