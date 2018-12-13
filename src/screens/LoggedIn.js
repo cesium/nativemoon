@@ -75,13 +75,20 @@ class LoggedIn extends Component {
 
       return (
         <View>
+          {badge != "" && (
+            <View>
+              <Text onPress={() => this.setState({ qr: !this.state.qr })}>
+                Badge: {badge} (click to go)
+              </Text>
+            </View>
+          )}
           <FlatList
             data={this.state.badges}
             ItemSeparatorComponent={this.listSeparator}
             renderItem={({ item }) => (
               <View>
-                <Text onPress={this.selectItem.bind(this, item)}>
-                  {item.name}
+                <Text onPress={this.selectItem.bind(this, item.name)}>
+                  {item.description}
                 </Text>
               </View>
             )}
