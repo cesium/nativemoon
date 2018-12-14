@@ -66,17 +66,10 @@ class LoggedIn extends Component {
       );
     } else {
       const { error, badge } = this.state;
-      const { errorTextStyle } = styles;
+      const { errorTextStyle, badgeStyle, logoutButton } = styles;
 
       return (
         <View>
-          {badge != "" && (
-            <View>
-              <Text onPress={() => this.setState({ qr: !this.state.qr })}>
-                Badge: {badge} (click to go)
-              </Text>
-            </View>
-          )}
           <FlatList
             data={this.state.badges}
             ItemSeparatorComponent={this.listSeparator}
@@ -90,7 +83,17 @@ class LoggedIn extends Component {
             keyExtractor={(item, index) => index.toString()}
           />
           <Text style={errorTextStyle}>{error}</Text>
+          {badge != "" && (
+            <View>
+              <Button
+                style={badgeStyle}
+                onPress={() => this.setState({ qr: !this.state.qr })}
+                title={"Scanner (" + badge + ")"}
+              />
+            </View>
+          )}
           <Button
+            style={logoutButton}
             onPress={this.props.deleteJWT}
             color="#FF0000"
             title="Log Out"
@@ -123,6 +126,12 @@ const styles = {
     borderBottomWidth: 1,
     fontSize: 18,
     color: "red"
+  },
+  badgeStyle: {},
+  logoutButton: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 20
   }
 };
 
