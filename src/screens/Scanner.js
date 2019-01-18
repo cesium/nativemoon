@@ -80,6 +80,11 @@ class Scanner extends Component {
             <Text style={styles.buttonText}>Redeemed: {this.state.count}</Text>
           </TouchableOpacity>
         }
+        bottomContent={
+          <TouchableOpacity style={styles.buttonTouchable}>
+            <Text style={styles.buttonText}>{this.state.count}</Text>
+          </TouchableOpacity>
+        }
       />
     );
   }
