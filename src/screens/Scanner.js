@@ -1,26 +1,34 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, TouchableOpacity, Linking } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import QRCodeScanner from "react-native-qrcode-scanner";
 import axios from "axios";
 
 class Scanner extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    };
+  }
+
   onSuccess(e) {
+    const { count } = this.state;
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_BADGES + badge;
-
+    
     axios
       .get(URL)
-      .then(res => {
-        Alert.alert("Badge redeem", "Success!", { cancelable: false });
+      .then(() => {
+        this.setState({count: count + 1});
       })
-      .catch(err => {
-        Alert.alert("Badge redeem", "Error!" + { err }, { cancelable: false });
+      .catch(() => {
       });
   }
 
   render() {
     return (
       <QRCodeScanner
+        checkAndroid6Permissions={true}
         onRead={this.onSuccess.bind(this)}
         reactivate={true}
         topContent={
@@ -28,6 +36,11 @@ class Scanner extends Component {
             Badge:
             <Text style={styles.textBold}>{this.props.badge}</Text>
           </Text>
+        }
+        bottomContent={
+          <TouchableOpacity style={styles.buttonTouchable}>
+            <Text style={styles.buttonText}>{this.state.count}</Text>
+          </TouchableOpacity>
         }
       />
     );
