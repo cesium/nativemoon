@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { RNCamera } from "react-native-camera";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import QRCodeScanner from "react-native-qrcode-scanner";
 import Config from "react-native-config";
 import axios from "axios";
 
@@ -32,7 +28,7 @@ class Scanner extends Component {
   onBarRead = e => {
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_REDEEM;
-    
+
     axios
       .post(URL, {
         redeem: {
@@ -48,38 +44,45 @@ class Scanner extends Component {
       });
   };
 
+ 
   render() {
     return (
-      <View style={styles.container}>
-        <RNCamera
-          barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
-          flashMode={RNCamera.Constants.FlashMode.on}
-          style={styles.preview}
-          onBarCodeRead={this.onBarRead}
-          ref={cam => (this.camera = cam)}
-        >
-          <Text
-            style={{
-              backgroundColor: "white"
-            }}
-          >
-            [{this.state.count}] {this.state.qrcode}
-          </Text>
-        </RNCamera>
-      </View>
+      <QRCodeScanner
+        checkAndroid6Permissions={true}
+        onRead={this.onBarRead}
+        reactivate={true}
+        topContent={
+          <TouchableOpacity style={styles.buttonTouchable}>
+            <Text style={styles.buttonText}>{this.state.qrcode}</Text>
+          </TouchableOpacity>
+        }
+        bottomContent={
+          <TouchableOpacity style={styles.buttonTouchable}>
+            <Text style={styles.buttonText}>Redeemed: {this.state.count}</Text>
+          </TouchableOpacity>
+        }
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centerText: {
     flex: 1,
-    flexDirection: "row"
+    fontSize: 18,
+    padding: 32,
+    color: "#777"
   },
-  preview: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center"
+  textBold: {
+    fontWeight: "500",
+    color: "#000"
+  },
+  buttonText: {
+    fontSize: 21,
+    color: "rgb(0,122,255)"
+  },
+  buttonTouchable: {
+    padding: 16
   }
 });
 
