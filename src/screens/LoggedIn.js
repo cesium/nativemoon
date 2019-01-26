@@ -80,8 +80,8 @@ class LoggedIn extends Component {
             ItemSeparatorComponent={this.listSeparator}
             renderItem={({ item }) => (
               <View>
-                <Text onPress={this.selectItem.bind(this, item.name)}>
-                  {item.description}
+                <Text onPress={this.selectItem.bind(this, item)}>
+                  {item.name}
                 </Text>
               </View>
             )}
