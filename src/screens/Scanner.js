@@ -64,6 +64,7 @@ class Scanner extends Component {
     }
   };
 
+ 
   render() {
     return (
       <QRCodeScanner
@@ -91,14 +92,22 @@ class Scanner extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centerText: {
     flex: 1,
-    flexDirection: "row"
+    fontSize: 18,
+    padding: 32,
+    color: "#777"
   },
-  preview: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center"
+  textBold: {
+    fontWeight: "500",
+    color: "#000"
+  },
+  buttonText: {
+    fontSize: 21,
+    color: "rgb(0,122,255)"
+  },
+  buttonTouchable: {
+    padding: 16
   }
 });
 
