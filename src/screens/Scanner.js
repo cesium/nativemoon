@@ -5,6 +5,7 @@ import {
   View,
 } from "react-native";
 import { RNCamera } from "react-native-camera";
+import Config from "react-native-config";
 import axios from "axios";
 
 class Scanner extends Component {
@@ -31,7 +32,7 @@ class Scanner extends Component {
   onBarRead = e => {
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_REDEEM;
-
+    
     axios
       .post(URL, {
         redeem: {
