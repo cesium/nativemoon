@@ -11,6 +11,7 @@ class LoggedIn extends Component {
       qr: false,
       badges: [],
       badge: "",
+      badgeId: -1,
       loading: false,
       error: ""
     };
@@ -62,7 +63,7 @@ class LoggedIn extends Component {
   render() {
     if (this.state.qr) {
       return (
-        <Scanner badge={this.state.badge} deleteJWT={this.props.deleteJWT} />
+        <Scanner badge={this.state.badgeId} badgeName={this.props.badge} deleteJWT={this.props.deleteJWT} />
       );
     } else {
       const { error, badge } = this.state;
@@ -75,8 +76,8 @@ class LoggedIn extends Component {
             ItemSeparatorComponent={this.listSeparator}
             renderItem={({ item }) => (
               <View>
-                <Text onPress={this.selectItem.bind(this, item.name)}>
-                  {item.description}
+                <Text onPress={this.selectItem.bind(this, item)}>
+                  {item.name}
                 </Text>
               </View>
             )}
@@ -116,7 +117,8 @@ class LoggedIn extends Component {
   };
 
   selectItem(badge) {
-    this.setState({ badge: badge });
+    this.setState({ badge: badge.name });
+    this.setState({ badgeId: badge.id });
   }
 }
 
