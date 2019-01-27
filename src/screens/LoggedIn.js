@@ -63,7 +63,11 @@ class LoggedIn extends Component {
   render() {
     if (this.state.qr) {
       return (
-        <Scanner badge={this.state.badgeId} badgeName={this.props.badge} deleteJWT={this.props.deleteJWT} />
+        <Scanner
+          badge={this.state.badgeId}
+          badgeName={this.props.badge}
+          deleteJWT={this.props.deleteJWT}
+        />
       );
     } else {
       const { error, badge } = this.state;

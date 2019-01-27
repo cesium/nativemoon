@@ -18,12 +18,12 @@ class Scanner extends Component {
     const { badgeName } = this.props;
 
     if (json.data.hasOwnProperty("redeem")) {
-        this.setState({ qrcode: badgeName});
-        this.setState({ count: count + 1});
+      this.setState({ qrcode: badgeName });
+      this.setState({ count: count + 1 });
     } else {
       this.setState({ qrcode: "Redeem error" });
     }
-  }
+  };
 
   onBarRead = e => {
     const { badge } = this.props;
@@ -44,7 +44,6 @@ class Scanner extends Component {
       });
   };
 
- 
   render() {
     return (
       <QRCodeScanner
