@@ -8,7 +8,7 @@ class Scanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      qrcode: "",
+      message: "",
       count: 0
     };
   }
@@ -18,21 +18,21 @@ class Scanner extends Component {
     const { badgeName } = this.props;
 
     if (json.data.hasOwnProperty("redeem")) {
-      this.setState({ qrcode: badgeName });
+      this.setState({ message: badgeName });
       this.setState({ count: count + 1 });
     } else {
-      this.setState({ qrcode: "Redeem error" });
+      this.setState({ message: "Redeem error" });
     }
   };
 
   onBarRead = e => {
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_REDEEM;
-
+    const id = stripUrl(e.data);
     axios
       .post(URL, {
         redeem: {
-          attendee_id: e.data,
+          attendee_id: id,
           badge_id: badge
         }
       })
@@ -40,8 +40,13 @@ class Scanner extends Component {
         this.validateJson(res);
       })
       .catch(() => {
-        this.setState({ qrcode: "Redeem error" });
+        this.setState({ message: "Redeem error" });
       });
+  };
+
+  stripUrl = str => {
+    const baseUrl = "https://intra.seium.org/user/";
+    return str.substr(baseUrl.length, str.length);
   };
 
   render() {
@@ -52,7 +57,7 @@ class Scanner extends Component {
         reactivate={true}
         topContent={
           <TouchableOpacity style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}>{this.state.qrcode}</Text>
+            <Text style={styles.buttonText}>{this.state.message}</Text>
           </TouchableOpacity>
         }
         bottomContent={
