@@ -64,7 +64,6 @@ class Scanner extends Component {
     }
   };
 
- 
   render() {
     return (
       <QRCodeScanner
