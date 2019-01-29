@@ -65,7 +65,7 @@ class Scanner extends Component {
   };
 
   stripUrl = str => {
-    const baseUrl = "https://intra.seium.org/user/";
+    var baseUrl = "https://intra.seium.org/user/";
 
     return str.substr(baseUrl.length, str.length);
   };
