@@ -28,11 +28,11 @@ class Scanner extends Component {
   onBarRead = e => {
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_REDEEM;
-    const id = stripUrl(e.data);
+    // const id = stripUrl(e.data);
     axios
       .post(URL, {
         redeem: {
-          attendee_id: id,
+          attendee_id: e.data,
           badge_id: badge
         }
       })
@@ -45,7 +45,7 @@ class Scanner extends Component {
   };
 
   stripUrl = str => {
-    const baseUrl = "https://intra.seium.org/user/";
+    var baseUrl = "https://intra.seium.org/user/";
 
     return str.substr(baseUrl.length, str.length);
   };
