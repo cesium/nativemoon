@@ -29,7 +29,7 @@ class Scanner extends Component {
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_REDEEM;
 
-    var regex = /.*http:\/\/intra.seium.org\/user\/(([A-Za-z0-9]+-*)+)/;
+    var regex = /.*https:\/\/intra.seium.org\/user\/(([A-Za-z0-9]+-*)+)/;
     const result = regex.exec(e.data);
 
     var id;
