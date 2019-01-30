@@ -46,6 +46,12 @@ Run the app.
 yarn run android
 ```
 
+Build the apk.
+
+```
+cd android && ENVFILE=.env.staging ./gradlew assembleRelease
+```
+
 ## Enviroment variables
 
 ```shell

@@ -1,114 +1,109 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text, Button} from 'react-native';
-import {Input, Loading} from './common';
-import deviceStorage from '../services/deviceStorage';
-import axios from 'axios';
-import Config from 'react-native-config';
+import React, { Component, Fragment } from "react";
+import { View, Text, Button } from "react-native";
+import { Input, Loading } from "./common";
+import deviceStorage from "../services/deviceStorage";
+import axios from "axios";
+import Config from "react-native-config";
 
-export default class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            error: '',
-            loading: false
-        };
-        this.validateJson = this.validateJson.bind(this);
-        this.loginUser = this.loginUser.bind(this);
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      error: "",
+      loading: false
+    };
+    this.validateJson = this.validateJson.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+  }
+
+  validateJson(json) {
+    if (json.data.hasOwnProperty("jwt")) {
+      deviceStorage.saveJWT("id_token", json.data.jwt);
+      console.log(json.data.jwt);
+      this.props.newJWT(json.data.jwt);
+    } else {
+      this.setState({ error: json.data.error, loading: false });
     }
+  }
 
-    validateJson(json) {
-        if (json.data.hasOwnProperty('jwt')) {
-            deviceStorage.saveJWT("id_token", json.data.jwt);
-            this.props.newJWT(json.data.jwt);
-        }
-        else {
-            this.setState({error: json.data.error, loading: false});
-        }
-    }
+  loginUser() {
+    const URL = Config.API_URL + Config.API_LOGIN;
+    const { email, password } = this.state;
+    this.setState({ error: "", loading: true });
 
-    loginUser() {
-        const URL = Config.API_URL + Config.API_LOGIN;
-        const {email, password} = this.state;
-        this.setState({error: '', loading: true});
+    axios
+      .post(URL, {
+        email: email,
+        password: password
+      })
+      .then(res => {
+        this.validateJson(res);
+      })
+      .catch(() => {
+        this.setState({ loading: false, error: "Login error" });
+      });
+  }
 
-        axios.post(URL, {
-            email: email,
-            password: password
-        })
-            .then(res => {
-                this.validateJson(res);
-            })
-            .catch(() => {
-                this.setState({loading: false, error: "Login error"});
-            });
-    }
+  render() {
+    const { email, password, error, loading } = this.state;
+    const { form, section, errorTextStyle } = styles;
 
-    render() {
-        const {email, password, error, loading} = this.state;
-        const {form, section, errorTextStyle} = styles;
+    return (
+      <Fragment>
+        <View style={form}>
+          <View style={section}>
+            <Input
+              placeholder="email@domain"
+              label="Email"
+              value={email}
+              onChangeText={email => this.setState({ email })}
+            />
+          </View>
 
-        return (
-            <Fragment>
-                <View style={form}>
-                    <View style={section}>
-                        <Input
-                            placeholder='youremail@domain'
-                            label="Email"
-                            value={email}
-                            onChangeText={email => this.setState({email})}
-                        />
-                    </View>
+          <View style={section}>
+            <Input
+              secureTextEntry
+              placeholder="password"
+              label="Password"
+              value={password}
+              onChangeText={password => this.setState({ password })}
+            />
+          </View>
 
-                    <View style={section}>
-                        <Input
-                            secureTextEntry
-                            placeholder="password"
-                            label="Password"
-                            value={password}
-                            onChangeText={password => this.setState({password})}
-                        />
-                    </View>
+          {!loading ? (
+            <Button onPress={this.loginUser} color="#1E6738" title="Login" />
+          ) : (
+            <Loading size={"large"} />
+          )}
 
-                    {!loading ?
-                        <Button
-                            onPress={this.loginUser}
-                            title="Login"
-                        />
-                        :
-                        <Loading size={'large'}/>
-                    }
-
-
-
-                    <Text style={errorTextStyle}>
-                        {error}
-                    </Text>
-
-                </View>
-            </Fragment>
-        );
-    }
+          <Text style={errorTextStyle}>{error}</Text>
+        </View>
+      </Fragment>
+    );
+  }
 }
 
 const styles = {
-    form: {
-        width: '100%',
-        borderTopWidth: 1,
-        borderColor: '#ddd',
-        justifyContent: 'center',
-    },
-    section: {
-        flexDirection: 'row',
-        borderBottomWidth: 1,
-        backgroundColor: '#fff',
-        borderColor: '#ddd',
-    },
-    errorTextStyle: {
-        alignSelf: 'center',
-        borderBottomWidth: 1,
-        fontSize: 18,
-        color: 'red'
-    }
+  form: {
+    width: "100%",
+    borderTopWidth: 1,
+    borderColor: "#ddd",
+    justifyContent: "center"
+  },
+  section: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    backgroundColor: "#fff",
+    borderColor: "#ddd"
+  },
+  errorTextStyle: {
+    alignSelf: "center",
+    borderBottomWidth: 1,
+    fontSize: 18,
+    color: "red"
+  }
 };
+
+export default Login;
