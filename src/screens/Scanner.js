@@ -64,40 +64,6 @@ class Scanner extends Component {
     }
   };
 
-    var regex = /.*http:\/\/intra.seium.org\/user\/(([A-Za-z0-9]+-*)+)/;
-    const result = regex.exec(e.data);
-
-    var id;
-    if (result != null && result.length >= 2) id = result[1];
-    else id = e.data;
-
-    if (id != null && id !== this.state.last) {
-      var headers = {
-        Authorization: "Bearer " + this.props.jwt
-      };
-
-      axios
-        .post(
-          URL,
-          {
-            redeem: {
-              attendee_id: id,
-              badge_id: badge
-            }
-          },
-          { headers: headers }
-        )
-        .then(res => {
-          this.validateJson(res);
-        })
-        .catch(() => {
-          this.setState({ message: "Redeem error" });
-        });
-      this.setState({ last: id });
-    } else {
-      this.setState({ message: "Not a valid qr code" });
-    }
-  };
 
   render() {
     return (
