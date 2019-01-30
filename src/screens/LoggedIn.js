@@ -40,8 +40,7 @@ class LoggedIn extends Component {
 
   validateJson(json) {
     if (json.hasOwnProperty("data")) {
-      const badges = json.data.data;
-      //const badges = this.filterByDate(json.data.data);
+      const badges = this.filterByDate(json.data.data);
       this.setState({ badges: badges });
     } else {
       this.setState({ error: json.data.error });
@@ -67,6 +66,7 @@ class LoggedIn extends Component {
           badge={this.state.badgeId}
           badgeName={this.props.badge}
           deleteJWT={this.props.deleteJWT}
+          jwt={this.props.jwt}
         />
       );
     } else {
@@ -121,8 +121,7 @@ class LoggedIn extends Component {
   };
 
   selectItem(badge) {
-    this.setState({ badge: badge.name });
-    this.setState({ badgeId: badge.id });
+    this.setState({ badge: badge.name, badgeId: badge.id });
   }
 }
 

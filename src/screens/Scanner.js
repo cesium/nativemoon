@@ -9,7 +9,8 @@ class Scanner extends Component {
     super(props);
     this.state = {
       message: "",
-      count: 0
+      count: 0,
+      last: ""
     };
   }
 
@@ -18,8 +19,7 @@ class Scanner extends Component {
     const { badgeName } = this.props;
 
     if (json.data.hasOwnProperty("redeem")) {
-      this.setState({ message: badgeName });
-      this.setState({ count: count + 1 });
+      this.setState({ message: badgeName, count: count + 1 });
     } else {
       this.setState({ message: "Redeem error" });
     }
@@ -28,26 +28,40 @@ class Scanner extends Component {
   onBarRead = e => {
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_REDEEM;
-    // const id = stripUrl(e.data);
-    axios
-      .post(URL, {
-        redeem: {
-          attendee_id: e.data,
-          badge_id: badge
-        }
-      })
-      .then(res => {
-        this.validateJson(res);
-      })
-      .catch(() => {
-        this.setState({ message: "Redeem error" });
-      });
-  };
 
-  stripUrl = str => {
-    var baseUrl = "https://intra.seium.org/user/";
+    var regex = /.*http:\/\/intra.seium.org\/user\/(([A-Za-z0-9]+-*)+)/;
+    const result = regex.exec(e.data);
 
-    return str.substr(baseUrl.length, str.length);
+    var id;
+    if (result != null && result.length >= 2) id = result[1];
+    else id = e.data;
+
+    if (id != null && id !== this.state.last) {
+      var headers = {
+        Authorization: "Bearer " + this.props.jwt
+      };
+
+      axios
+        .post(
+          URL,
+          {
+            redeem: {
+              attendee_id: id,
+              badge_id: badge
+            }
+          },
+          { headers: headers }
+        )
+        .then(res => {
+          this.validateJson(res);
+        })
+        .catch(() => {
+          this.setState({ message: "Redeem error" });
+        });
+      this.setState({ last: id });
+    } else {
+      this.setState({ message: "Not a valid qr code" });
+    }
   };
 
   render() {
