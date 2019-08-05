@@ -123,6 +123,22 @@ class LoggedIn extends Component {
   selectItem(badge) {
     this.setState({ badge: badge.name, badgeId: badge.id });
   }
+
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#607D8B"
+        }}
+      />
+    );
+  };
+
+  selectItem(badge) {
+    this.setState({ badge: badge });
+  }
 }
 
 const styles = {

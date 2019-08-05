@@ -20,6 +20,10 @@ export default class App extends Component {
     this.loadJWT();
   }
 
+  componentWillMount() {
+    this.loadJWT();
+  }
+
   newJWT(jwt) {
     this.setState({
       jwt: jwt

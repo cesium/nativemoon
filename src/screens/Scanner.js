@@ -29,7 +29,8 @@ class Scanner extends Component {
     const { badge } = this.props;
     const URL = Config.API_URL + Config.API_REDEEM;
 
-    var regex = /.*https:\/\/intra.seium.org\/user\/(([A-Za-z0-9]+-*)+)/;
+    // TODO Make this more flexible
+    var regex = /.*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)/;
     const result = regex.exec(e.data);
 
     var id;
@@ -60,9 +61,10 @@ class Scanner extends Component {
         });
       this.setState({ last: id });
     } else {
-      this.setState({ message: "Not a valid qr code" });
+      this.setState({ message: "Already scanned" });
     }
   };
+
 
   render() {
     return (
@@ -78,6 +80,11 @@ class Scanner extends Component {
         bottomContent={
           <TouchableOpacity style={styles.buttonTouchable}>
             <Text style={styles.buttonText}>Redeemed: {this.state.count}</Text>
+          </TouchableOpacity>
+        }
+        bottomContent={
+          <TouchableOpacity style={styles.buttonTouchable}>
+            <Text style={styles.buttonText}>{this.state.count}</Text>
           </TouchableOpacity>
         }
       />
