@@ -6,8 +6,7 @@
 
 ## About NativeMoon
 
-React-native Mobile App for the Badge Platform for CeSIUM's Computer Engineering Week
-event.
+Flutter Mobile App for the Badge Platform for ENEI, National Computer Engineering Students Meeting.
 
 This is a collaborative project alongside the
 [Safira](https://github.com/cesium/safira) backend platform
@@ -16,48 +15,7 @@ and the
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your
-local machine for development and testing purposes.
-
-### Prerequisites
-
-- [Yarn](https://yarnpkg.com/lang/en/) - Provides a fast, reliable and secure node package manager.
-[Checkout installation guidelines](https://yarnpkg.com/lang/en/docs/install).
-
-### Installing
-
-Installing Yarn dependecies.
-
-```shell
-yarn install
-```
-
-### Development
-
-Starting the development server.
-
-```shell
-yarn start
-```
-
-Run the app.
-
-```shell
-yarn run android
-```
-
-Build the apk.
-
-```
-cd android && ENVFILE=.env.staging ./gradlew assembleRelease
-```
-
-## Enviroment variables
-
-```shell
-mv .env.sample .env
-```
-Add your enviroment variables
+For now the only thing you need is to install flutter. This will be updated soon.
 
 ## Contributing
 
