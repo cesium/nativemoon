@@ -15,8 +15,32 @@ and the
 
 ## Getting Started
 
-For now the only thing you need is to install flutter. This will be updated soon.
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes.
 
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view 
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+
+### Prerequisites
+
+- [Flutter](https://flutter.dev/) - Toolkit for building natively compiled applications for mobile.
+[Checkout installation guidelines](https://flutter.dev/docs/get-started/install).
+
+### Development
+
+You need a mobile device connected to your machine or use the emulator created by VS Code/Android Studio.
+
+Run the app on your terminal.
+
+```shell
+flutter run
+```
 ## Contributing
 
 Please read [CONTRIBUTING](CONTRIBUTING.md) and [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) for details on our code of conduct and the process for submitting pull requests to us.

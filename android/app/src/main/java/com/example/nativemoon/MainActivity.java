@@ -1,4 +1,4 @@
-package com.example.native_moon;
+package com.example.nativemoon;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
