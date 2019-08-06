@@ -6,8 +6,7 @@
 
 ## About NativeMoon
 
-React-native Mobile App for the Badge Platform for CeSIUM's Computer Engineering Week
-event.
+Flutter Mobile App for the Badge Platform for ENEI, National Computer Engineering Students Meeting.
 
 This is a collaborative project alongside the
 [Safira](https://github.com/cesium/safira) backend platform
@@ -19,46 +18,29 @@ and the
 These instructions will get you a copy of the project up and running on your
 local machine for development and testing purposes.
 
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view 
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+
 ### Prerequisites
 
-- [Yarn](https://yarnpkg.com/lang/en/) - Provides a fast, reliable and secure node package manager.
-[Checkout installation guidelines](https://yarnpkg.com/lang/en/docs/install).
-
-### Installing
-
-Installing Yarn dependecies.
-
-```shell
-yarn install
-```
+- [Flutter](https://flutter.dev/) - Toolkit for building natively compiled applications for mobile.
+[Checkout installation guidelines](https://flutter.dev/docs/get-started/install).
 
 ### Development
 
-Starting the development server.
+You need a mobile device connected to your machine or use the emulator created by VS Code/Android Studio.
+
+Run the app on your terminal.
 
 ```shell
-yarn start
+flutter run
 ```
-
-Run the app.
-
-```shell
-yarn run android
-```
-
-Build the apk.
-
-```
-cd android && ENVFILE=.env.staging ./gradlew assembleRelease
-```
-
-## Enviroment variables
-
-```shell
-mv .env.sample .env
-```
-Add your enviroment variables
-
 ## Contributing
 
 Please read [CONTRIBUTING](CONTRIBUTING.md) and [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) for details on our code of conduct and the process for submitting pull requests to us.
