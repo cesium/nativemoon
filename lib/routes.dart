@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nativemoon/screens/login.dart';
+import 'package:nativemoon/screens/Home/index.dart';
+import 'package:nativemoon/screens/Login/index.dart';
 
 class Routes {
 
   var routes = <String, WidgetBuilder>{
-    
+    "/Home": (BuildContext context) => new HomePage()
   };
 
   Routes() {

@@ -5,11 +5,12 @@ import 'package:http/http.dart' as http;
 class Authentication {
 
   final String token;
+  final bool valid;
 
-  Authentication({this.token});
+  Authentication({this.token, this.valid});
 
   factory Authentication.fromJson(Map<String, dynamic> json) {
-    return Authentication(token : json['jwt']);
+    return Authentication(token : json['jwt'], valid: true);
   }
 }
 
@@ -20,6 +21,6 @@ Future<Authentication> fetchAuthToken(String email, String password) async{
   if (response.statusCode == 200) {
       return Authentication.fromJson(json.decode(response.body));
   } else {
-      throw Exception('Incorrect Email or Password');
+      return new Authentication(token: '', valid: false);
   }
 }
