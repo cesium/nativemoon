@@ -1,84 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:nativemoon/components/myTextField.dart';
+import 'package:nativemoon/components/roundedButton.dart';
 
 class LoginPage extends StatefulWidget {
+
   LoginPage({Key key, this.title}) : super(key: key);
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+
   final String title;
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-   final emailController = TextEditingController();
-   final passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+      
+      String email;
+      String password;
 
       @override
       Widget build(BuildContext context) {
 
-        final emailField = TextField(
-          controller: TextEditingController(),
-          obscureText: false,
-          decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Email",
-              labelStyle: new TextStyle(color: Colors.white),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-        );
+        final emailField = new MyTextField("Email", true, Colors.white, Colors.white, 32.0, false, email);
 
-        final passwordField = TextField(
-          controller: TextEditingController(),
-          obscureText: true,
-          decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Password",
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-        );
+        final passwordField = new MyTextField( "Password", true, Colors.white, Colors.white, 32.0, true, password);
 
-        final loginButon = Material(
-          elevation: 5.0,
-          borderRadius: BorderRadius.circular(30.0),
-          color: Colors.orange[200],
-          child: MaterialButton(
-            minWidth: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            onPressed: () {
-          return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                // Retrieve the text the that user has entered by using the
-                // TextEditingController.
-                content: Text(emailController.text),
-              );
-            },
-          );
-        },
-            child: Text("Login",
-                textAlign: TextAlign.center,
-          ),
-        )
-        );
+        _test() {
+            print("hello");
+        }
+
+        final loginButon = new RoundedButton("Login", Colors.orange[200], 5.0, 0, 0, 30.0, _test); 
 
         return Scaffold(
           body: Center(
