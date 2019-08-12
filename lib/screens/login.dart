@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nativemoon/components/myTextField.dart';
 import 'package:nativemoon/components/roundedButton.dart';
+import 'package:nativemoon/services/authentication.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -13,22 +14,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-      
-      String email;
-      String password;
-
+    
       @override
       Widget build(BuildContext context) {
 
-        final emailField = new MyTextField("Email", true, Colors.white, Colors.white, 32.0, false, email);
+        final emailField = new MyTextField("Email", true, Colors.white, Colors.white, 32.0, false);
 
-        final passwordField = new MyTextField( "Password", true, Colors.white, Colors.white, 32.0, true, password);
+        final passwordField = new MyTextField( "Password", true, Colors.white, Colors.white, 32.0, true);
 
-        _test() {
-            print("hello");
-        }
+        _auth() async {
+            Authentication auth = await fetchAuthToken(emailField.value.toString(), passwordField.value.toString());
+       }
 
-        final loginButon = new RoundedButton("Login", Colors.orange[200], 5.0, 0, 0, 30.0, _test); 
+        final loginButon = new RoundedButton("Login", Colors.orange[200], 5.0, 0, 0, 30.0, _auth); 
 
         return Scaffold(
           body: Center(
