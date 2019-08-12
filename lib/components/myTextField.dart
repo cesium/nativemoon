@@ -16,8 +16,7 @@ class MyTextField extends StatelessWidget{
     this.filledColor,
     this.textColor,
     this.border,
-    this.hideText,
-    this.value,
+    this.hideText
   );
 
 @override
@@ -25,7 +24,7 @@ class MyTextField extends StatelessWidget{
     if(hideText){
         return TextField(
               onChanged: (text) {
-                value = text;
+                this.value = text;
               },
               obscureText: hideText,
               decoration: InputDecoration(
@@ -39,8 +38,8 @@ class MyTextField extends StatelessWidget{
     } else {
         return TextField(
                 onChanged: (text) {
-                     value = text;
-                },
+                  this.value = text;
+              },
                 obscureText: hideText,
                 decoration: InputDecoration(
                     filled: filled,
