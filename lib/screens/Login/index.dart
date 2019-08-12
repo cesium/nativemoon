@@ -24,6 +24,9 @@ class _LoginPageState extends State<LoginPage> {
 
         _auth() async {
             Authentication auth = await fetchAuthToken(emailField.value.toString(), passwordField.value.toString());
+            if(auth.valid){
+              Navigator.pushNamed(context, "/Home");
+            }
        }
 
         final loginButon = new RoundedButton("Login", Colors.orange[200], 5.0, 0, 0, 30.0, _auth); 
