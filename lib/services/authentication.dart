@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:nativemoon/env.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Authentication {
   final String token;
@@ -15,8 +15,8 @@ class Authentication {
 }
 
 Future<Authentication> fetchAuthToken(String email, String password) async {
-  
-  final response = await http.post(env.baseUrl + '/api/auth/sign_in?email=' + email + '&password=' + password);
+
+  final response = await http.post(DotEnv().env['APP_ENDPOINT'] + '/api/auth/sign_in?email=' + email + '&password=' + password);
 
   if (response.statusCode == 200) {
     return Authentication.fromJson(json.decode(response.body));

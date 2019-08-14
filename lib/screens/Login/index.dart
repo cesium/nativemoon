@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     final passwordField = new MyTextField("Password", true, Colors.white, Colors.white, 32.0, true);
 
     _auth() async {
+
       Authentication auth = await fetchAuthToken(emailField.value.toString(), passwordField.value.toString());
       if (auth.valid) {
         //needs to save token somewhere
