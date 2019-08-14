@@ -10,7 +10,7 @@ class Routes {
 
   Routes() {
     runApp(new MaterialApp(
-      title: "Flutter Flat App",
+      title: "NativeMoon",
       home:  LoginPage(title: 'Login',),
       theme: ThemeData(
         primarySwatch: Colors.blue
