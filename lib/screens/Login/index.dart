@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
 
-    final loginButon = new RoundedButton("Login", Colors.orange[200], 5.0, 0, 0, 30.0, _auth);
+    final loginButton = new RoundedButton("Login", Colors.orange[200], 5.0, 0, 0, 30.0, _auth);
 
     return Scaffold(
       body: Center(
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 15.0,
                 ),
-                loginButon,
+                loginButton,
                 SizedBox(
                   height: 15.0,
                 ),
