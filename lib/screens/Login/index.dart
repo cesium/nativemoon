@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/components/myTextField.dart';
 import 'package:nativemoon/components/roundedButton.dart';
 import 'package:nativemoon/services/authentication.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -14,10 +16,29 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  Future<String> _startPage() async{
+    SharedPreferences prefs =  await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  @protected
+  @mustCallSuper
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Future<String> token = _startPage();
+      if(token != null){
+        print(token);
+        Navigator.pushNamed(context, "/Home");
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final emailField =
-        new MyTextField("Email", true, Colors.white, Colors.white, 32.0, false);
+
+    final emailField = new MyTextField("Email", true, Colors.white, Colors.white, 32.0, false);
 
     final passwordField = new MyTextField("Password", true, Colors.white, Colors.white, 32.0, true);
 
@@ -25,8 +46,9 @@ class _LoginPageState extends State<LoginPage> {
 
       Authentication auth = await fetchAuthToken(emailField.value.toString(), passwordField.value.toString());
       if (auth.valid) {
-        //needs to save token somewhere
-        Navigator.pushNamed(context, "/Home");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', auth.token);
+        Navigator.pop(context);
       } else {
         PopUpAlert.showAlert(
             context, "Error", "Invalid Email or Password", "OK");
