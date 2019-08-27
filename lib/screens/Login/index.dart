@@ -27,11 +27,13 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      Future<String> token = _startPage();
-      if(token != null){
-        print(token);
-        Navigator.pushNamed(context, "/Home");
+     _startPage().then((token){
+       if(token != null){
+         print(token);
+         Navigator.pushNamed(context, "/Home");
+       }
       }
+     );
     });
   }
 
@@ -48,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
       if (auth.valid) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', auth.token);
-        Navigator.pop(context);
+        Navigator.pushNamed(context, "/Home");
       } else {
         PopUpAlert.showAlert(
             context, "Error", "Invalid Email or Password", "OK");
