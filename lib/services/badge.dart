@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class Badge {
 
   final int type;
@@ -18,3 +22,19 @@ class Badge {
                  avatar: json['avatar']);
   }
 } 
+Future<List<Badge>> fetchBadges(String token) async {
+  print(token);
+  var http;
+    final response = await http.get(
+    DotEnv().env['API_URL'] + '/api/v1/badges',
+    headers: {"Authorization": "Bearer " + token},
+  );
+
+  if (response.statusCode == 200) {
+    Map m = json.decode(response.body);
+    List l = m['data'];
+    return l.map((i)=> Badge.fromJson(i)).toList();
+  } else {
+    throw Exception('Failed to load badges');
+  }
+}
