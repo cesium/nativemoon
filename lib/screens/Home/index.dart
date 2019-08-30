@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
+import 'package:nativemoon/components/cardGrid.dart';
 import 'package:nativemoon/services/badge.dart';
 import 'package:nativemoon/services/badges.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:qrcode_reader/qrcode_reader.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -13,65 +13,30 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   List<Badge> badges;
+  List<Image> images;
 
   Future<List<Badge>> getBadges() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return fetchBadges(prefs.getString('token'));
   }
 
-  List<Card> _buildGridCards(int count) {
-    List<Card> cards = List.generate(
-      count,
-      (int index) => Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: (){
-            print(this.badges[index].description);
-            Future<String> futureString = new QRCodeReader()
-               .setAutoFocusIntervalInMs(200) // default 5000
-               .setForceAutoFocus(true) // default false
-               .setTorchEnabled(true) // default false
-               .setHandlePermissions(true) // default true
-               .setExecuteAfterPermissionGranted(true) // default true
-               .scan();
-          },
-          child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            AspectRatio(
-              aspectRatio: 17.3 / 11.0,
-              child: Image.network(badges[index].avatar, ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(this.badges[index].name),
-                  SizedBox(height: 9.0),
-              
-                ],
-              ),
-            ),
-          ],
-        ),
-        ),
-      ),
-    );
-
-    return cards;
-  }
   @override
   void initState() {
     getBadges().then((fbadges) {
       this.badges = fbadges;
+      this.images = new List(this.badges.length);
+      for(int i = 0; i < this.badges.length; i++){
+       this.images[i] = Image.network(this.badges[i].avatar, );
+      }
     });
-    
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
+    final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
     
     return MaterialApp(
         title: 'Badges',
@@ -84,7 +49,7 @@ class HomePageState extends State<HomePage> {
             crossAxisCount: 2,
             padding: EdgeInsets.all(16.0),
             childAspectRatio: 8.0 / 9.0,
-            children: _buildGridCards(this.badges.length),
+            children: badgeGrid.buildGrid(),
           ),
         )
         );
