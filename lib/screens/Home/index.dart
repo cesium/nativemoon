@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
-import 'package:nativemoon/components/cardGrid.dart';
+import 'package:nativemoon/components/badgeGrid.dart';
 import 'package:nativemoon/services/badge.dart';
-import 'package:nativemoon/services/badges.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
