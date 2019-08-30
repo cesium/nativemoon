@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Badge {
@@ -24,7 +24,6 @@ class Badge {
 } 
 Future<List<Badge>> fetchBadges(String token) async {
   print(token);
-  var http;
     final response = await http.get(
     DotEnv().env['API_URL'] + '/api/v1/badges',
     headers: {"Authorization": "Bearer " + token},
