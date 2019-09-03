@@ -7,7 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:nativemoon/screens/Login/index.dart';
+import 'package:NativeMoon/screens/Login/index.dart';
 
 void main() {
   testWidgets('Login Page', (WidgetTester tester) async {
