@@ -30,7 +30,6 @@ class _AppLoadPageState extends State<AppLoad> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _startPage().then((token) {
         if (token != null) {
-          print(token);
           Navigator.pushNamed(context, "/Home");
         }
         else Navigator.pushNamed(context,"/Login");

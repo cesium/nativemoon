@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:NativeMoon/components/popUpAlert.dart';
-import 'package:NativeMoon/components/myTextField.dart';
-import 'package:NativeMoon/components/roundedButton.dart';
-import 'package:NativeMoon/services/authentication.dart';
+import 'package:nativemoon/components/popUpAlert.dart';
+import 'package:nativemoon/components/myTextField.dart';
+import 'package:nativemoon/components/roundedButton.dart';
+import 'package:nativemoon/services/authentication.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

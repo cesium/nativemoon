@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:NativeMoon/screens/Home/index.dart';
-import 'package:NativeMoon/screens/Login/index.dart';
-import 'package:NativeMoon/screens/AppLoad/index.dart';
+import 'package:nativemoon/screens/Home/index.dart';
+import 'package:nativemoon/screens/Login/index.dart';
+import 'package:nativemoon/screens/AppLoad/index.dart';
 
 
 class Routes {
