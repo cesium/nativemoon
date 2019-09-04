@@ -3,6 +3,8 @@ import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/components/myTextField.dart';
 import 'package:nativemoon/components/roundedButton.dart';
 import 'package:nativemoon/services/authentication.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -14,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   @override
   Widget build(BuildContext context) {
     final emailField =
@@ -25,7 +28,8 @@ class _LoginPageState extends State<LoginPage> {
 
       Authentication auth = await fetchAuthToken(emailField.value.toString(), passwordField.value.toString());
       if (auth.valid) {
-        //needs to save token somewhere
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', auth.token);
         Navigator.pushNamed(context, "/Home");
       } else {
         PopUpAlert.showAlert(
