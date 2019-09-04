@@ -46,7 +46,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logo_enei.png
-    - .env.sample
+    - .env
 
   #  - images/a_dot_ham.jpeg
 
