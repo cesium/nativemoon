@@ -2,6 +2,8 @@ import "package:flutter/material.dart";
 import 'package:nativemoon/components/badgeGrid.dart';
 import 'package:nativemoon/services/badge.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loading/loading.dart';
+import 'package:loading/indicator/line_scale_party_indicator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -21,36 +23,59 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    getBadges().then((fbadges) {
-      this.badges = fbadges;
-      this.images = new List(this.badges.length);
-      for(int i = 0; i < this.badges.length; i++){
-       this.images[i] = Image.network(this.badges[i].avatar, );
-      }
-    });
     super.initState();
+
+    getBadges().then((fbadges) {
+      setState(() {
+        this.badges = fbadges;
+        this.images = new List(this.badges.length);
+        for(int i = 0; i < this.badges.length; i++){
+          this.images[i] = Image.network(this.badges[i].avatar, );
+        }
+      });
+    });
   }
 
 
   @override
   Widget build(BuildContext context) {
 
-    final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
-    
-    return MaterialApp(
-        title: 'Badges',
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('Badges'),
-            backgroundColor: Colors.cyan[900],
+    if (this.badges == null){
+      return MaterialApp(
+          title: 'Badges',
+          home: Scaffold(
+            appBar: AppBar(
+              title: new Text("Badges"),
+              backgroundColor: Colors.cyan[900],
+            ),
+            body: Container(
+              color: Colors.cyan[900],
+              child: Center(
+              child: Loading(indicator: LineScalePartyIndicator(), size: 100.0),
+              ),
+            ),
           ),
-          body: GridView.count(
-            crossAxisCount: 2,
-            padding: EdgeInsets.all(16.0),
-            childAspectRatio: 8.0 / 9.0,
-            children: badgeGrid.buildGrid(),
-          ),
-        )
+      );
+      }
+
+      else {
+        final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
+
+        return MaterialApp(
+            title: 'Badges',
+            home: Scaffold(
+              appBar: AppBar(
+                title: Text('Badges'),
+                backgroundColor: Colors.cyan[900],
+              ),
+              body: GridView.count(
+                crossAxisCount: 2,
+                padding: EdgeInsets.all(16.0),
+                childAspectRatio: 8.0 / 9.0,
+                children: badgeGrid.buildGrid(),
+              ),
+            )
         );
-  }
+      }
+    }
 }

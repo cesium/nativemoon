@@ -26,8 +26,7 @@ dependencies:
   http: ^0.12.0+2
   flutter_dotenv:
   shared_preferences: ^0.5.3+4
-  qrcode_reader:
-   
+  loading: ^1.0.1   
 
 dev_dependencies:
   flutter_test:
