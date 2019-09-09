@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
      _startPage().then((token){
        if(token != null){
-         print(token);
          Navigator.pushNamed(context, "/Home");
        }
       }

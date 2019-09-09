@@ -10,6 +10,7 @@
 .svn/
 .vscode/
 .env
+.lock
 
 # IntelliJ related
 *.iml
