@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nativemoon/services/badge.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class BadgePage extends StatefulWidget {
   @override
@@ -29,7 +32,7 @@ class _BadgePageState extends State<BadgePage> {
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: true,
-          title: Text(badge.name),
+          title: Text("Redeem badge"),
           backgroundColor: Colors.cyan[900],
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -52,13 +55,16 @@ class _BadgePageState extends State<BadgePage> {
                 ),
               ),
               new Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: new Text(badge.name,
-                    style: new TextStyle(
-                        fontSize: 25.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w800,
-                        fontFamily: "Roboto")),
+                padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+                child: new AutoSizeText(
+                  badge.name,
+                  style: new TextStyle(
+                      fontSize: 25.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w800,
+                      fontFamily: "Roboto"),
+                  maxLines: 1,
+                ),
               ),
               new Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 20),
@@ -121,23 +127,36 @@ class _BadgePageState extends State<BadgePage> {
   }
 
   void scanQRCode(String badgeId) async {
-    // Assuming the QR Code will return the User ID:
-    String userId = await scanner.scan();
+    String link = await scanner.scan();
+    List<String> vars = link.split("/");
+    String userId = vars[vars.length - 1];
 
     // set the loading indicator
     setState(() {
       isLoading = true;
     });
 
-    final response = await http.post(DotEnv().env['API_URL'] +
-        '/api/v1/redeems?attendee_id=' +
-        userId +
-        '&badge_id=' +
-        badgeId);
+    // get auth token
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
 
+    // set request params
+    var body = {
+      "redeem": {"attendee_id": userId, "badge_id": badgeId}
+    };
+    String jsonBody = json.encode(body);
+    final encoding = Encoding.getByName('utf-8');
+
+    // send request
+    final response = await http.post(
+        DotEnv().env['API_URL'] + '/api/v1/redeems',
+        headers: {"Authorization": "Bearer " + token},
+        body: jsonBody,
+        encoding: encoding);
+
+    // change screen state regarding request result
     String stText;
     Color stColor;
-
     if (response.statusCode == 200) {
       stText = "Badge redeemed with success!";
       stColor = Colors.green;
