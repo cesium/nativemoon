@@ -48,7 +48,6 @@ class _BadgePageState extends State<BadgePage> {
               new Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: new Image.network(
-                  // for testing purposes while image not available: 'http://clipart-library.com/data_images/298652.png',
                   badge.avatar,
                   width: 200.0,
                   height: 200.0,
@@ -82,7 +81,7 @@ class _BadgePageState extends State<BadgePage> {
                         child: new Column(children: <Widget>[
                           new RaisedButton(
                             key: null,
-                            onPressed: () => scanQRCode(badge.name),
+                            onPressed: () => scanQRCode(badge.id),
                             color: Colors.orange[200],
                             child: new Text("Scan QR Code",
                                 style: new TextStyle(
@@ -126,49 +125,63 @@ class _BadgePageState extends State<BadgePage> {
     );
   }
 
-  void scanQRCode(String badgeId) async {
+  void scanQRCode(int badgeId) async {
     String link = await scanner.scan();
-    List<String> vars = link.split("/");
-    String userId = vars[vars.length - 1];
 
-    // set the loading indicator
-    setState(() {
-      isLoading = true;
-    });
+    RegExp regExp = new RegExp(
+      DotEnv().env['API_URL'] + "api/v1/attendees/",
+      caseSensitive: false,
+      multiLine: false,
+    );
 
-    // get auth token
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString('token');
+    // check if link is valid
+    if (regExp.hasMatch(link)) {
+      List<String> vars = link.split("/");
+      String userId = vars[vars.length - 1];
+      // set the loading indicator
+      setState(() {
+        isLoading = true;
+      });
 
-    // set request params
-    var body = {
-      "redeem": {"attendee_id": userId, "badge_id": badgeId}
-    };
-    String jsonBody = json.encode(body);
-    final encoding = Encoding.getByName('utf-8');
+      // get auth token
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString('token');
 
-    // send request
-    final response = await http.post(
-        DotEnv().env['API_URL'] + '/api/v1/redeems',
-        headers: {"Authorization": "Bearer " + token},
-        body: jsonBody,
-        encoding: encoding);
+      // set request params
+      var body = {
+        "redeem": {"attendee_id": userId, "badge_id": badgeId.toString()}
+      };
+      String jsonBody = json.encode(body);
+      print(jsonBody);
+      final encoding = Encoding.getByName('utf-8');
 
-    // change screen state regarding request result
-    String stText;
-    Color stColor;
-    if (response.statusCode == 200) {
-      stText = "Badge redeemed with success!";
-      stColor = Colors.green;
-    } else {
-      stText = "An error ocurred. Please try again.";
-      stColor = Colors.red;
+      // send request
+      final response = await http.post(
+          DotEnv().env['API_URL'] + 'api/v1/redeems',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: jsonBody,
+          encoding: encoding);
+
+      // change screen state regarding request result
+      // TODO: change status text to response gotten by server
+      String stText;
+      Color stColor;
+      if (response.statusCode == 201) {
+        stText = "Badge redeemed with success!";
+        stColor = Colors.green;
+      } else {
+        stText = "An error ocurred. Please try again.";
+        stColor = Colors.red;
+      }
+
+      setState(() {
+        isLoading = false;
+        statusText = stText;
+        statusColor = stColor;
+      });
     }
-
-    setState(() {
-      isLoading = false;
-      statusText = stText;
-      statusColor = stColor;
-    });
   }
 }
