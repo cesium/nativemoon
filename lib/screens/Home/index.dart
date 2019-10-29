@@ -29,53 +29,50 @@ class HomePageState extends State<HomePage> {
       setState(() {
         this.badges = fbadges;
         this.images = new List(this.badges.length);
-        for(int i = 0; i < this.badges.length; i++){
-          this.images[i] = Image.network(this.badges[i].avatar, );
+        for (int i = 0; i < this.badges.length; i++) {
+          this.images[i] = Image.network(
+            this.badges[i].avatar,
+          );
         }
       });
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    if (this.badges == null) {
+      return MaterialApp(
+        title: 'Badges',
+        home: Scaffold(
+          appBar: AppBar(
+            title: new Text("Badges"),
+            backgroundColor: Colors.cyan[900],
+          ),
+          body: Container(
+            color: Colors.cyan[900],
+            child: Center(
+              child: Loading(indicator: LineScalePartyIndicator(), size: 100.0),
+            ),
+          ),
+        ),
+      );
+    } else {
+      final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
 
-    if (this.badges == null){
       return MaterialApp(
           title: 'Badges',
           home: Scaffold(
             appBar: AppBar(
-              title: new Text("Badges"),
+              title: Text('Badges'),
               backgroundColor: Colors.cyan[900],
             ),
-            body: Container(
-              color: Colors.cyan[900],
-              child: Center(
-              child: Loading(indicator: LineScalePartyIndicator(), size: 100.0),
-              ),
+            body: GridView.count(
+              crossAxisCount: 2,
+              padding: EdgeInsets.all(16.0),
+              childAspectRatio: 8.0 / 9.0,
+              children: badgeGrid.buildGrid(context),
             ),
-          ),
-      );
-      }
-
-      else {
-        final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
-
-        return MaterialApp(
-            title: 'Badges',
-            home: Scaffold(
-              appBar: AppBar(
-                title: Text('Badges'),
-                backgroundColor: Colors.cyan[900],
-              ),
-              body: GridView.count(
-                crossAxisCount: 2,
-                padding: EdgeInsets.all(16.0),
-                childAspectRatio: 8.0 / 9.0,
-                children: badgeGrid.buildGrid(),
-              ),
-            )
-        );
-      }
+          ));
     }
+  }
 }
