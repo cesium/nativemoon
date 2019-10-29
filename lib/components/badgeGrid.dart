@@ -2,19 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nativemoon/services/badge.dart';
 
-class BadgeGrid{
-
+class BadgeGrid {
   final List<Badge> badges;
 
   BadgeGrid(this.badges);
 
-  List<Card> buildGrid() {
+  List<Card> buildGrid(BuildContext context) {
     return List.generate(
       this.badges.length,
       (int index) => Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: (){},
+          onTap: () {
+            Navigator.pushNamed(context, "/Badge",
+                arguments: this.badges[index]);
+          },
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -32,8 +34,8 @@ class BadgeGrid{
                 ],
               ),
             ),
-          ],
-        ),
+            ],
+          ),
         ),
       ),
     );

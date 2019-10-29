@@ -32,7 +32,6 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Badge> rbadges = new List();
@@ -53,9 +52,9 @@ class HomePageState extends State<HomePage> {
             ),
           ),
       );
-      }
+    }
 
-      else {
+    else {
         for (int i = 0; i < this.badges.length; i++) {
           
           DateTime startDate = DateTime.parse(this.badges[i].begin.substring(0, 10) +
