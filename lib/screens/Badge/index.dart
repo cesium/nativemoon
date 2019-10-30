@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nativemoon/screens/Badge/errors.dart';
 import 'package:nativemoon/services/badge.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -134,6 +135,9 @@ class _BadgePageState extends State<BadgePage> {
       multiLine: false,
     );
 
+    String stText;
+    Color stColor;
+
     // check if link is valid
     if (regExp.hasMatch(link)) {
       List<String> vars = link.split("/");
@@ -166,22 +170,24 @@ class _BadgePageState extends State<BadgePage> {
           encoding: encoding);
 
       // change screen state regarding request result
-      // TODO: change status text to response gotten by server
-      String stText;
-      Color stColor;
       if (response.statusCode == 201) {
-        stText = "Badge redeemed with success!";
+        stText = "Badge redeemed successfully.";
         stColor = Colors.green;
       } else {
-        stText = "An error ocurred. Please try again.";
+        Errors errors = new Errors.fromJson(json.decode(response.body));
+        Results res = errors.results;
+        stText = res.detail != null ? res.detail : res.msgs[0];
         stColor = Colors.red;
       }
-
-      setState(() {
-        isLoading = false;
-        statusText = stText;
-        statusColor = stColor;
-      });
+    } else {
+      stText = "Invalid link.";
+      stColor = Colors.red;
     }
+
+    setState(() {
+      isLoading = false;
+      statusText = stText;
+      statusColor = stColor;
+    });
   }
 }
