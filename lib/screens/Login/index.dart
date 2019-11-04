@@ -16,9 +16,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoading = false;
 
-  Future<String> _startPage() async{
-    SharedPreferences prefs =  await SharedPreferences.getInstance();
+  Future<String> _startPage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
 
@@ -27,25 +28,34 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-     _startPage().then((token){
-       if(token != null){
-         Navigator.pushNamed(context, "/Home");
-       }
-      }
-     );
+      _startPage().then((token) {
+        if (token != null) {
+          Navigator.pushNamed(context, "/Home");
+        }
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final emailField =
+        new MyTextField("Email", true, Colors.white, Colors.white, 32.0, false);
 
-    final emailField = new MyTextField("Email", true, Colors.white, Colors.white, 32.0, false);
-
-    final passwordField = new MyTextField("Password", true, Colors.white, Colors.white, 32.0, true);
+    final passwordField = new MyTextField(
+        "Password", true, Colors.white, Colors.white, 32.0, true);
 
     _auth() async {
+      setState(() {
+        isLoading = true;
+      });
 
-      Authentication auth = await fetchAuthToken(emailField.value.toString(), passwordField.value.toString());
+      Authentication auth = await fetchAuthToken(
+          emailField.value.toString(), passwordField.value.toString());
+
+      setState(() {
+        isLoading = false;
+      });
+
       if (auth.valid) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', auth.token);
@@ -56,7 +66,10 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
 
-    final loginButton = new RoundedButton("Login", Colors.orange[200], 5.0, 0, 0, 30.0, _auth);
+    final loginButton = isLoading
+        ? new CircularProgressIndicator()
+        : new RoundedButton(
+            "Login", Colors.orange[200], 5.0, 0, 0, 30.0, _auth);
 
     return Scaffold(
       body: Center(
