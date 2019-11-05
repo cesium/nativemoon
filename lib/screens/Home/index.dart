@@ -28,9 +28,9 @@ class HomePageState extends State<HomePage> {
     getBadges().then((fbadges) {
       setState(() {
         this.badges = fbadges;
-        this.images = new List(this.badges.length);
+        this.images = new List();
         for(int i = 0; i < this.badges.length; i++){
-          this.images[i] = Image.network(this.badges[i].avatar, );
+          this.images[i] = (Image.network(this.badges[i].avatar, ));
         }
       });
     });
@@ -59,6 +59,21 @@ class HomePageState extends State<HomePage> {
       }
 
       else {
+        for (int i = 0; i < this.badges.length; i++) {
+          
+          DateTime startDate = DateTime.parse(this.badges[i].begin.substring(0, 10) +
+            ' ' +
+            this.badges[i].begin.substring(11, 19));
+          DateTime endDate = DateTime.parse(this.badges[i].end.substring(0, 10) +
+            ' ' +
+            this.badges[i].end.substring(11, 19)); 
+
+          if (startDate.isAfter(DateTime.now()) ||  endDate.isBefore(DateTime.now())) {
+            this.badges.remove(this.badges[i]);
+            this.images.remove(this.images[i]);
+          }
+        }
+ 
         final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
 
         return MaterialApp(
