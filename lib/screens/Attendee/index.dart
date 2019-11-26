@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nativemoon/components/popUpAlert.dart';
+import 'package:nativemoon/services/attendee.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendeePage extends StatefulWidget {
   @override
@@ -10,6 +14,12 @@ class AttendeePage extends StatefulWidget {
 class _AttendeePageState extends State<AttendeePage> {
   bool isLoading;
   bool isScanned;
+  Attendee attendee;
+
+  Future<Attendee> getAttendee(id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return fetchAttendee(prefs.getString('token'), id);
+  }
 
   @override
   void initState() {
@@ -80,7 +90,7 @@ class _AttendeePageState extends State<AttendeePage> {
               padding: EdgeInsets.only(bottom: 50),
               child: new Image.network(
                 // attendee.avatar
-                'https://dazedimg-dazedgroup.netdna-ssl.com/786/azure/dazed-prod/1120/0/1120288.jpg',
+                attendee.avatar,
                 width: 200.0,
                 height: 200.0,
               ),
@@ -89,7 +99,7 @@ class _AttendeePageState extends State<AttendeePage> {
               padding: EdgeInsets.only(left: 25, right: 25),
               child: Text(
                 // attendee.nick
-                'Mr. Poopy',
+                attendee.nick,
                 style: TextStyle(
                     fontSize: 40.0,
                     color: const Color(0xFF000000),
@@ -102,7 +112,7 @@ class _AttendeePageState extends State<AttendeePage> {
               padding: EdgeInsets.only(top: 0, bottom: 30),
               child: Text(
                 // attendee.email
-                'waazuuuuuup@email.poop',
+                'temporary@email.com',
                 style: TextStyle(
                     fontSize: 20.0,
                     color: const Color(0xFF000000),
@@ -192,18 +202,38 @@ class _AttendeePageState extends State<AttendeePage> {
   }
 
   void scanQRCode() async {
-    // for testing purposes
+    String link = await scanner.scan();
 
-    setState(() {
-      isScanned = false;
-      isLoading = true;
-    });
+    RegExp regExp = new RegExp(
+      DotEnv().env['API_URL'] + "api/v1/attendees/",
+      caseSensitive: false,
+      multiLine: false,
+    );
 
-    Future.delayed(const Duration(seconds: 5), () {
+    if (regExp.hasMatch(link)) {
+      List<String> vars = link.split("/");
+      String userId = vars[vars.length - 1];
+
+      // set the loading indicator
       setState(() {
-        isScanned = true;
+        isScanned = false;
+        isLoading = true;
+      });
+
+      // get attendee
+      getAttendee(userId).then((attendee) {
+        setState(() {
+          this.attendee = attendee;
+          this.isScanned = true;
+          this.isLoading = false;
+        });
+      });
+    } else {
+      setState(() {
+        isScanned = false;
         isLoading = false;
       });
-    });
+      PopUpAlert.showAlert(context, "Error", "Invalid QR Code", "Try again");
+    }
   }
 }
