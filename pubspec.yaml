@@ -28,6 +28,7 @@ dependencies:
   flutter_dotenv:
   shared_preferences: ^0.5.3+4
   loading: ^1.0.1
+  qrscan: ^0.2.17
    
 
 dev_dependencies:
