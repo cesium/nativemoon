@@ -29,85 +29,102 @@ class HomePageState extends State<HomePage> {
       setState(() {
         this.badges = fbadges;
         this.images = new List(this.badges.length);
-        for(int i = 0; i < this.badges.length; i++){
-          this.images[i] = Image.network(this.badges[i].avatar, );
+        for (int i = 0; i < this.badges.length; i++) {
+          this.images[i] = Image.network(
+            this.badges[i].avatar,
+          );
         }
       });
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    if (this.badges == null) {
+      return MaterialApp(
+        title: 'Badges',
+        home: Scaffold(
+          appBar: AppBar(
+            title: new Text("Badges"),
+            backgroundColor: Colors.cyan[900],
+          ),
+          body: Container(
+            color: Colors.cyan[900],
+            child: Center(
+              child: Loading(indicator: LineScalePartyIndicator(), size: 100.0),
+            ),
+          ),
+        ),
+      );
+    } else {
+      final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
 
-    if (this.badges == null){
       return MaterialApp(
           title: 'Badges',
           home: Scaffold(
             appBar: AppBar(
-              title: new Text("Badges"),
+              title: Text('Badges'),
               backgroundColor: Colors.cyan[900],
             ),
-            body: Container(
-              color: Colors.cyan[900],
-              child: Center(
-              child: Loading(indicator: LineScalePartyIndicator(), size: 100.0),
+            body: GridView.count(
+              crossAxisCount: 2,
+              padding: EdgeInsets.all(16.0),
+              childAspectRatio: 8.0 / 9.0,
+              children: badgeGrid.buildGrid(),
+            ),
+            drawer: Drawer(
+              child: ListView(
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    accountName: Text("ENEI"),
+                    accountEmail: Text("tecnologia@enei.pt"),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Text(
+                        "ENEI",
+                        style:
+                            TextStyle(fontSize: 25.0, color: Colors.cyan[900]),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.cyan[900],
+                    ),
+                  ),
+                  new Container(
+                    decoration: new BoxDecoration(color: Colors.orange[800]),
+                    child: new ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.lock_open, color: Colors.white),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text("Badges",
+                                style: TextStyle(color: Colors.white)),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.person_outline, color: Colors.cyan[900]),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text("Attendee",
+                                style: TextStyle(color: Colors.cyan[900])),
+                          )
+                        ],
+                      ),
+                      trailing: Icon(Icons.arrow_forward),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, "/Attendee");
+                      }),
+                ],
               ),
             ),
-          ),
-      );
-      }
-
-      else {
-        final BadgeGrid badgeGrid = new BadgeGrid(this.badges, this.images);
-
-        return MaterialApp(
-            title: 'Badges',
-            home: Scaffold(
-              appBar: AppBar(
-                title: Text('Badges'),
-                backgroundColor: Colors.cyan[900],
-              ),
-              body: GridView.count(
-                crossAxisCount: 2,
-                padding: EdgeInsets.all(16.0),
-                childAspectRatio: 8.0 / 9.0,
-                children: badgeGrid.buildGrid(),
-              ),
-              drawer: Drawer(
-                  child: ListView(
-                    children: <Widget>[
-                      UserAccountsDrawerHeader(
-                        accountName: Text("ENEI"),
-                        accountEmail: Text("tecnologia@enei.pt"),
-                        currentAccountPicture: CircleAvatar(
-                          backgroundColor: Colors.cyan[900],
-                          child: Text(
-                            "ENEI",
-                            style: TextStyle(fontSize: 25.0),
-                          ),
-                        ),
-                      ),
-                      new Container (
-                        decoration: new BoxDecoration (
-                            color: Colors.cyan[900]
-                        ),
-                        child: new ListTile(
-                          title: Text("Badges", style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                      ListTile(
-                        title: Text("Attendee"),
-                        trailing: Icon(Icons.arrow_forward),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        }
-                      ),
-                    ],
-                  ),
-                ),
-              )
-        );
-      }
+          ));
     }
+  }
 }
