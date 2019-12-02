@@ -5,9 +5,8 @@ import 'package:nativemoon/services/badge.dart';
 class BadgeGrid{
 
   final List<Badge> badges;
-  final List<Image> images;
 
-  BadgeGrid(this.badges, this.images);
+  BadgeGrid(this.badges);
 
   List<Card> buildGrid() {
     return List.generate(
@@ -21,7 +20,7 @@ class BadgeGrid{
           children: <Widget>[
             AspectRatio(
               aspectRatio: 17.3 / 11.0,
-              child: this.images[index],
+              child: Image.network(this.badges[index].avatar),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
