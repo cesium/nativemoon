@@ -205,7 +205,7 @@ class _AttendeePageState extends State<AttendeePage> {
     String link = await scanner.scan();
 
     RegExp regExp = new RegExp(
-      DotEnv().env['API_URL'] + "api/v1/attendees/",
+      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
       caseSensitive: false,
       multiLine: false,
     );
