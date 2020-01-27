@@ -86,8 +86,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Badge> rbadges = new List();
-
+    
     if (this.badges == null) {
       return MaterialApp(
         title: 'Badges',
@@ -109,6 +108,8 @@ class HomePageState extends State<HomePage> {
         ),
       );
     } else {
+      filteredBadges= new List();
+
       for (int i = 0; i < this.badges.length; i++) {
         DateTime startDate = DateTime.parse(
             this.badges[i].begin.substring(0, 10) +
@@ -120,9 +121,7 @@ class HomePageState extends State<HomePage> {
 
         //if (!(startDate.isAfter(DateTime.now()) ||
            // endDate.isBefore(DateTime.now()))) {
-        rbadges.add(this.badges[i]);
-
-        
+        filteredBadges.add(this.badges[i]);
       }
 
       return MaterialApp(
