@@ -32,7 +32,6 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Badge> rbadges = new List();
@@ -85,39 +84,7 @@ class HomePageState extends State<HomePage> {
                 childAspectRatio: 8.0 / 9.0,
                 children: badgeGrid.buildGrid(),
               ),
-              drawer: Drawer(
-                  child: ListView(
-                    children: <Widget>[
-                      UserAccountsDrawerHeader(
-                        accountName: Text("ENEI"),
-                        accountEmail: Text("tecnologia@enei.pt"),
-                        currentAccountPicture: CircleAvatar(
-                          backgroundColor: Colors.cyan[900],
-                          child: Text(
-                            "ENEI",
-                            style: TextStyle(fontSize: 25.0),
-                          ),
-                        ),
-                      ),
-                      new Container (
-                        decoration: new BoxDecoration (
-                            color: Colors.cyan[900]
-                        ),
-                        child: new ListTile(
-                          title: Text("Badges", style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                      ListTile(
-                        title: Text("Attendee"),
-                        trailing: Icon(Icons.arrow_forward),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        }
-                      ),
-                    ],
-                  ),
-                ),
-              )
+            )
         );
       }
     }
