@@ -26,7 +26,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: ^0.12.0+2
   flutter_dotenv:
-  shared_preferences: ^0.5.3+4
+  shared_preferences: 
   loading: ^1.0.1
   qrscan: ^0.2.17
    
