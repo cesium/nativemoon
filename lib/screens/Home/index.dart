@@ -93,10 +93,10 @@ class HomePageState extends State<HomePage> {
         home: Scaffold(
           appBar: AppBar(
             title: _appBarTitle,
-            leading: new IconButton(
+            actions: [new IconButton(
               icon: _searchIcon,
               onPressed: _searchPressed,
-            ),
+            )],
             backgroundColor: Colors.cyan[900],
           ),
           body: Container(
@@ -128,7 +128,11 @@ class HomePageState extends State<HomePage> {
             title: 'Badges',
             home: Scaffold(
               appBar: AppBar(
-                title: Text('Badges'),
+                title: _appBarTitle,
+                actions: [new IconButton(
+                  icon: _searchIcon,
+                  onPressed: _searchPressed,
+                )],
                 backgroundColor: Colors.cyan[900],
               ),
               body: GridView.count(
