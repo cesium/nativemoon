@@ -32,7 +32,6 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Badge> rbadges = new List();
@@ -53,9 +52,9 @@ class HomePageState extends State<HomePage> {
             ),
           ),
       );
-      }
+    }
 
-      else {
+    else {
         for (int i = 0; i < this.badges.length; i++) {
           
           DateTime startDate = DateTime.parse(this.badges[i].begin.substring(0, 10) +
@@ -83,7 +82,7 @@ class HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(16.0),
                 childAspectRatio: 8.0 / 9.0,
-                children: badgeGrid.buildGrid(),
+                children: badgeGrid.buildGrid(context),
               ),
             )
         );
