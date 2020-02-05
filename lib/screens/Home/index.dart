@@ -82,7 +82,7 @@ class HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(16.0),
                 childAspectRatio: 8.0 / 9.0,
-                children: badgeGrid.buildGrid(),
+                children: badgeGrid.buildGrid(context),
               ),
             )
         );

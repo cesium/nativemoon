@@ -126,6 +126,30 @@ class _BadgePageState extends State<BadgePage> {
     );
   }
 
+  dynamic sendRequest(String userId, int badgeId) async {
+    // get auth token
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString('token');
+
+      // set request params
+      var body = {
+        "redeem": {"attendee_id": userId, "badge_id": badgeId.toString()}
+      };
+      String jsonBody = json.encode(body);
+      print(jsonBody);
+      final encoding = Encoding.getByName('utf-8');
+
+      // send request
+      return await http.post(
+          DotEnv().env['API_URL'] + 'api/v1/redeems',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: jsonBody,
+          encoding: encoding);
+  }
+
   void scanQRCode(int badgeId) async {
     String link = await scanner.scan();
 
@@ -147,27 +171,7 @@ class _BadgePageState extends State<BadgePage> {
         isLoading = true;
       });
 
-      // get auth token
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString('token');
-
-      // set request params
-      var body = {
-        "redeem": {"attendee_id": userId, "badge_id": badgeId.toString()}
-      };
-      String jsonBody = json.encode(body);
-      print(jsonBody);
-      final encoding = Encoding.getByName('utf-8');
-
-      // send request
-      final response = await http.post(
-          DotEnv().env['API_URL'] + 'api/v1/redeems',
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: jsonBody,
-          encoding: encoding);
+      final response = await sendRequest(userId, badgeId);
 
       // change screen state regarding request result
       if (response.statusCode == 201) {
