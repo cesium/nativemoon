@@ -9,7 +9,7 @@ class Routes {
   var routes = <String, WidgetBuilder>{
     "/Login": (BuildContext context) => new LoginPage(),
     "/Home": (BuildContext context) => new HomePage(),
-    "/Attendee": (BuildContext context) => new AttendeePage()
+    "/Attendee": (BuildContext context) => new AttendeePage(),
     "/Badge": (BuildContext context) => new BadgePage(),
   };
 
