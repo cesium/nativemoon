@@ -84,6 +84,58 @@ class HomePageState extends State<HomePage> {
                 childAspectRatio: 8.0 / 9.0,
                 children: badgeGrid.buildGrid(),
               ),
+             drawer: Drawer(
+              child: ListView(
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    accountName: Text("ENEI"),
+                    accountEmail: Text("tecnologia@enei.pt"),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Text(
+                        "ENEI",
+                        style:
+                            TextStyle(fontSize: 25.0, color: Colors.cyan[900]),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.cyan[900],
+                    ),
+                  ),
+                  new Container(
+                    decoration: new BoxDecoration(color: Colors.orange[800]),
+                    child: new ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.lock_open, color: Colors.white),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text("Badges",
+                                style: TextStyle(color: Colors.white)),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.person_outline, color: Colors.cyan[900]),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text("Attendee",
+                                style: TextStyle(color: Colors.cyan[900])),
+                          )
+                        ],
+                      ),
+                      trailing: Icon(Icons.arrow_forward),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, "/Attendee");
+                      }),
+                ],
+              ),
+            ),
             )
         );
       }
