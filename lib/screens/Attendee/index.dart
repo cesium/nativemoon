@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/widgets.dart' as prefix0;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/screens/Attendee/badges.dart';
 import 'package:nativemoon/services/attendee.dart';

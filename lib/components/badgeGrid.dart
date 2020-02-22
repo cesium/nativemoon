@@ -7,15 +7,15 @@ class BadgeGrid {
 
   BadgeGrid(this.badges);
 
-  List<Card> buildGrid(BuildContext context) {
+  List<Card> buildGrid(BuildContext context, int view) { // if 0 is read only to not allow redeem
     return List.generate(
       this.badges.length,
       (int index) => Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () {
+          onTap: () {view != 0 ?
             Navigator.pushNamed(context, "/Badge",
-                arguments: this.badges[index]);
+                arguments: this.badges[index]) : view = 0;
           },
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/line_scale_party_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../components/badgeGrid.dart';
 import '../../services/badge.dart';
 
@@ -34,9 +32,9 @@ class AttendeeBadgesState extends StatelessWidget {
       List<Badge> filteredBadges = new List();
 
       for (int i = 0; i < this.badges.length; i++) {
-        //if (this.badges[i].type) {
+        if (this.badges[i].type == 0) {
         filteredBadges.add(this.badges[i]);
-        //}
+        }
       }
 
       return MaterialApp(
@@ -50,7 +48,7 @@ class AttendeeBadgesState extends StatelessWidget {
               crossAxisCount: 2,
               padding: EdgeInsets.all(16.0),
               childAspectRatio: 8.0 / 9.0,
-              children: (new BadgeGrid(filteredBadges)).buildGrid(context),
+              children: (new BadgeGrid(filteredBadges)).buildGrid(context, 0),
             ),
           ));
     }

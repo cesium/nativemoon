@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/scheduler.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/components/myTextField.dart';
