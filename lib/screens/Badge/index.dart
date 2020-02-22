@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nativemoon/screens/Badge/errors.dart';
 import 'package:nativemoon/services/badge.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -100,6 +100,17 @@ class _BadgePageState extends State<BadgePage> {
                                       fontWeight: FontWeight.w300,
                                       fontFamily: "Roboto")),
                             ),
+                            new RaisedButton(
+                              key: null,
+                              onPressed: () => scanQRCodeContinuously(badge.id),
+                              color: Colors.orange[200],
+                              child: new Text("Multiple Scans",
+                                  style: new TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Roboto")),
+                            ),
                           ]),
                         )
                       : new Center(
@@ -150,8 +161,43 @@ class _BadgePageState extends State<BadgePage> {
           encoding: encoding);
   }
 
+  scanQRCodeContinuously(int badgeId) {
+    FlutterBarcodeScanner.getBarcodeStreamReceiver("#006064", "Cancel", true, ScanMode.QR)
+         .listen((link) async { 
+
+           RegExp regExp = new RegExp(
+            ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
+            caseSensitive: false,
+            multiLine: false,
+          );
+
+          // check if link is valid
+          if (regExp.hasMatch(link)) {
+            List<String> vars = link.split("/");
+            String userId = vars[vars.length - 1];
+
+
+            final response = await sendRequest(userId, badgeId);
+
+            // change screen state regarding request result
+            if (response.statusCode == 201) {
+              final snackBar = SnackBar(content: Text('Badge redeemed successfully.'));
+              Scaffold.of(context).showSnackBar(snackBar);
+            } else {
+              Errors errors = new Errors.fromJson(json.decode(response.body));
+              Results res = errors.results;
+              final snackBar = SnackBar(content: Text(res.detail != null ? res.detail : res.msgs[0]));
+              Scaffold.of(context).showSnackBar(snackBar);
+            }
+          } else {
+            final snackBar = SnackBar(content: Text('Invalid QR Code.'));
+            Scaffold.of(context).showSnackBar(snackBar);
+          }
+      });
+  }
+
   void scanQRCode(int badgeId) async {
-    String link = await scanner.scan();
+    String link = await FlutterBarcodeScanner.scanBarcode("#006064", "Cancel", true, ScanMode.QR);
 
     RegExp regExp = new RegExp(
       ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
@@ -195,3 +241,4 @@ class _BadgePageState extends State<BadgePage> {
     });
   }
 }
+

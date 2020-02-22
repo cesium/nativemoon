@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/services/attendee.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendeePage extends StatefulWidget {
@@ -205,7 +204,7 @@ class _AttendeePageState extends State<AttendeePage> {
   }
 
   void scanQRCode() async {
-    String link = await scanner.scan();
+    String link = await FlutterBarcodeScanner.scanBarcode("#006064", "Cancel", true, ScanMode.QR);
 
     RegExp regExp = new RegExp(
       ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
