@@ -81,7 +81,7 @@ class HomePageState extends State<HomePage> {
     }
     filteredBadges = tempList;
   }
-  return (new BadgeGrid(filteredBadges)).buildGrid(context);
+  return (new BadgeGrid(filteredBadges)).buildGrid(context,1);
 }
 
   @override
