@@ -30,100 +30,100 @@ class _BadgePageState extends State<BadgePage> {
   Widget build(BuildContext build) {
     final Badge badge = ModalRoute.of(build).settings.arguments;
 
-    return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: Text("Redeem badge"),
-          backgroundColor: Colors.cyan[900],
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(build, false),
-          )),
-      body: new Container(
-        child: new Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: new Image.network(
-                  badge.avatar,
-                  width: 200.0,
-                  height: 200.0,
+    return new Scaffold(
+        appBar: AppBar(
+            automaticallyImplyLeading: true,
+            title: Text("Redeem badge"),
+            backgroundColor: Colors.cyan[900],
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(build, false),
+            )),
+        body: new Container(
+          child: new Center(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: new Image.network(
+                    badge.avatar,
+                    width: 200.0,
+                    height: 200.0,
+                  ),
                 ),
-              ),
-              new Padding(
-                padding: EdgeInsets.only(top: 15, left: 25, right: 25),
-                child: new AutoSizeText(
-                  badge.name,
-                  style: new TextStyle(
-                      fontSize: 25.0,
-                      color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w800,
-                      fontFamily: "Roboto"),
-                  maxLines: 1,
-                ),
-              ),
-              new Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 20),
-                child: new Text(badge.description,
+                new Padding(
+                  padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+                  child: new AutoSizeText(
+                    badge.name,
                     style: new TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 25.0,
                         color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w100,
-                        fontFamily: "Roboto")),
-              ),
-              new Padding(
-                padding: EdgeInsets.only(top: 75),
-                child: !isLoading
-                    ? new Center(
-                        child: new Column(children: <Widget>[
-                          new RaisedButton(
-                            key: null,
-                            onPressed: () => scanQRCode(badge.id),
-                            color: Colors.orange[200],
-                            child: new Text("Scan QR Code",
-                                style: new TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "Roboto")),
-                          ),
-                          new Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: new Text(statusText,
-                                style: new TextStyle(
-                                    fontSize: 16.0,
-                                    color: statusColor,
-                                    fontWeight: FontWeight.w300,
-                                    fontFamily: "Roboto")),
-                          ),
-                        ]),
-                      )
-                    : new Center(
-                        child: new Column(
-                          children: <Widget>[
-                            new CircularProgressIndicator(),
-                            new Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: new Text("Redeeming badge...",
+                        fontWeight: FontWeight.w800,
+                        fontFamily: "Roboto"),
+                    maxLines: 1,
+                  ),
+                ),
+                new Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 20),
+                  child: new Text(badge.description,
+                      style: new TextStyle(
+                          fontSize: 16.0,
+                          color: const Color(0xFF000000),
+                          fontWeight: FontWeight.w100,
+                          fontFamily: "Roboto")),
+                ),
+                new Padding(
+                  padding: EdgeInsets.only(top: 75),
+                  child: !isLoading
+                      ? new Center(
+                          child: new Column(children: <Widget>[
+                            new RaisedButton(
+                              key: null,
+                              onPressed: () => scanQRCode(badge.id),
+                              color: Colors.orange[200],
+                              child: new Text("Scan QR Code",
                                   style: new TextStyle(
                                       fontSize: 16.0,
-                                      color: const Color(0xFF000000),
-                                      fontWeight: FontWeight.w100,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
                                       fontFamily: "Roboto")),
                             ),
-                          ],
+                            new Padding(
+                              padding: EdgeInsets.only(top: 10),
+                              child: new Text(statusText,
+                                  style: new TextStyle(
+                                      fontSize: 16.0,
+                                      color: statusColor,
+                                      fontWeight: FontWeight.w300,
+                                      fontFamily: "Roboto")),
+                            ),
+                          ]),
+                        )
+                      : new Center(
+                          child: new Column(
+                            children: <Widget>[
+                              new CircularProgressIndicator(),
+                              new Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: new Text("Redeeming badge...",
+                                    style: new TextStyle(
+                                        fontSize: 16.0,
+                                        color: const Color(0xFF000000),
+                                        fontWeight: FontWeight.w100,
+                                        fontFamily: "Roboto")),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   dynamic sendRequest(String userId, int badgeId) async {
@@ -154,7 +154,7 @@ class _BadgePageState extends State<BadgePage> {
     String link = await scanner.scan();
 
     RegExp regExp = new RegExp(
-      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
+      ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
       caseSensitive: false,
       multiLine: false,
     );

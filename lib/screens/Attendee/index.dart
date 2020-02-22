@@ -138,64 +138,67 @@ class _AttendeePageState extends State<AttendeePage> {
   }
 
   Widget build(BuildContext build) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: Text("Attendee"),
-        backgroundColor: Colors.cyan[900],
-      ),
-      body: drawBody(),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("ENEI"),
-              accountEmail: Text("tecnologia@enei.pt"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  "ENEI",
-                  style: TextStyle(fontSize: 25.0, color: Colors.cyan[900]),
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: new Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text("Attendee"),
+          backgroundColor: Colors.cyan[900],
+        ),
+        body: drawBody(),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text("ENEI"),
+                accountEmail: Text("tecnologia@enei.pt"),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Text(
+                    "ENEI",
+                    style: TextStyle(fontSize: 25.0, color: Colors.cyan[900]),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.cyan[900],
                 ),
               ),
-              decoration: BoxDecoration(
-                color: Colors.cyan[900],
-              ),
-            ),
-            ListTile(
-                title: Row(
-                  children: <Widget>[
-                    Icon(Icons.lock_open, color: Colors.cyan[900]),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text("Badges",
-                          style: TextStyle(color: Colors.cyan[900])),
-                    )
-                  ],
-                ),
-                trailing: Icon(Icons.arrow_forward),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, "/Home");
-                }),
-            Container(
-              decoration: BoxDecoration(color: Colors.orange[800]),
-              child: ListTile(
-                title: Row(
-                  children: <Widget>[
-                    Icon(Icons.person_outline, color: Colors.white),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "Attendee",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
+              ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(Icons.lock_open, color: Colors.cyan[900]),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text("Badges",
+                            style: TextStyle(color: Colors.cyan[900])),
+                      )
+                    ],
+                  ),
+                  trailing: Icon(Icons.arrow_forward),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, "/Home");
+                  }),
+              Container(
+                decoration: BoxDecoration(color: Colors.orange[800]),
+                child: ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(Icons.person_outline, color: Colors.white),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          "Attendee",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -205,7 +208,7 @@ class _AttendeePageState extends State<AttendeePage> {
     String link = await scanner.scan();
 
     RegExp regExp = new RegExp(
-      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
+      ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
       caseSensitive: false,
       multiLine: false,
     );
