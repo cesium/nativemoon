@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
+import 'package:nativemoon/screens/Attendee/badges.dart';
 import 'package:nativemoon/services/attendee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,11 @@ class _AttendeePageState extends State<AttendeePage> {
   Future<Attendee> getAttendee(id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return fetchAttendee(prefs.getString('token'), id);
+  }
+
+  Future<List<Badge>> getAttendeeBadges(id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return fetchAttendeeBadges(prefs.getString('token'), id);
   }
 
   @override
@@ -50,6 +56,18 @@ class _AttendeePageState extends State<AttendeePage> {
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
                           fontFamily: "Roboto")),
+                ),
+                RaisedButton(
+                  key: null,
+                  onPressed: () => scanQRCodeforBadges(),
+                  color: Colors.orange[800],
+                  child: Text("Scan to check Badges",
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "Roboto")
+                          ),
                 ),
               ]),
         );
@@ -229,6 +247,47 @@ class _AttendeePageState extends State<AttendeePage> {
           this.isScanned = true;
           this.isLoading = false;
         });
+      });
+    } else {
+      setState(() {
+        isScanned = false;
+        isLoading = false;
+      });
+      PopUpAlert.showAlert(context, "Error", "Invalid QR Code", "Try again");
+    }
+  }
+
+  void scanQRCodeforBadges() async {
+    String link = await scanner.scan();
+
+    RegExp regExp = new RegExp(
+      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
+      caseSensitive: false,
+      multiLine: false,
+    );
+
+    if (regExp.hasMatch(link)) {
+      List<String> vars = link.split("/");
+      String userId = vars[vars.length - 1];
+
+      // set the loading indicator
+      setState(() {
+        isScanned = false;
+        isLoading = true;
+      });
+
+      // get attendee
+      getAttendeeBadges(userId).then((badges) {
+        setState(() {
+          this.isScanned = false;
+          this.isLoading = false;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AttendeeBadgesState(badges: badges),
+          ),
+        );
       });
     } else {
       setState(() {
