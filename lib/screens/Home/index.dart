@@ -124,7 +124,9 @@ class HomePageState extends State<HomePage> {
         filteredBadges.add(this.badges[i]);
       }
 
-        return MaterialApp(
+        return new WillPopScope(
+          onWillPop: () async => false,
+          child: new MaterialApp(
             title: 'Badges',
             home: Scaffold(
               appBar: AppBar(
@@ -194,6 +196,7 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             )
+          ),
         );
     }
   }
