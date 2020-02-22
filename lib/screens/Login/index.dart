@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/scheduler.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/components/myTextField.dart';
@@ -52,18 +53,18 @@ class _LoginPageState extends State<LoginPage> {
       Authentication auth = await fetchAuthToken(
           emailField.value.toString(), passwordField.value.toString());
 
-      setState(() {
-        isLoading = false;
-      });
-
       if (auth.valid) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', auth.token);
+        Navigator.pop(context);
         Navigator.pushNamed(context, "/Home");
       } else {
         PopUpAlert.showAlert(
             context, "Error", "Invalid Email or Password", "OK");
       }
+      setState(() {
+        isLoading = false;
+      });
     }
 
     final loginButton = isLoading
