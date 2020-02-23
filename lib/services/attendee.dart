@@ -30,7 +30,7 @@ class Badges{
 Future<Attendee> fetchAttendee(String token, String id) async {
   print(token);
   final response = await http.get(
-    DotEnv().env['API_URL'] + '/api/v1/attendees/' + id,
+    DotEnv().env['API_URL'] + 'api/v1/attendees/' + id,
     headers: {"Authorization": "Bearer " + token},
   );
 

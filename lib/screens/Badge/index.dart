@@ -181,16 +181,19 @@ class _BadgePageState extends State<BadgePage> {
         // change screen state regarding request result
         if (response.statusCode == 201) {
           if (await Vibration.hasVibrator()) {
-            Vibration.vibrate();
+            // long vibrate : correct
+            Vibration.vibrate(duration: 1000);
           }
         } else {
           if (await Vibration.hasVibrator()) {
-            Vibration.vibrate();
+            // double vibrate : error
+            Vibration.vibrate(pattern: [0, 500, 250, 500]);
           }
         }
       } else {
         if (await Vibration.hasVibrator()) {
-          Vibration.vibrate();
+          // double vibrate : error
+          Vibration.vibrate(pattern: [0, 500, 250, 500]);
         }
       }
     });

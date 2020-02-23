@@ -16,7 +16,7 @@ class Authentication {
 
 Future<Authentication> fetchAuthToken(String email, String password) async {
 
-  final response = await http.post(DotEnv().env['API_URL'] + '/api/auth/sign_in?email=' + email + '&password=' + password);
+  final response = await http.post(DotEnv().env['API_URL'] + 'api/auth/sign_in?email=' + email + '&password=' + password);
 
   if (response.statusCode == 200) {
     return Authentication.fromJson(json.decode(response.body));
