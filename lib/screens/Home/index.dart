@@ -89,6 +89,7 @@ class HomePageState extends State<HomePage> {
     
     if (this.badges == null) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Badges',
         home: Scaffold(
           appBar: AppBar(
