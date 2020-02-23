@@ -128,6 +128,7 @@ class HomePageState extends State<HomePage> {
         return new WillPopScope(
           onWillPop: () async => false,
           child: new MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Badges',
             home: Scaffold(
               appBar: AppBar(
