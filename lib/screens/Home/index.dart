@@ -120,7 +120,7 @@ class HomePageState extends State<HomePage> {
             this.badges[i].end.substring(11, 19));
 
         if (!(startDate.isAfter(DateTime.now()) ||
-           endDate.isBefore(DateTime.now())) && this.badges[i].type!=0) {
+           endDate.isBefore(DateTime.now()))) {
         filteredBadges.add(this.badges[i]);
         }
       }
