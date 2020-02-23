@@ -15,6 +15,7 @@ class Routes {
 
   Routes() {
     runApp(new MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "NativeMoon",
         home: AppLoad(),
         theme: ThemeData(primarySwatch: Colors.blue),

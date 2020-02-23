@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/screens/Attendee/badges.dart';
 import 'package:nativemoon/services/attendee.dart';
 import 'package:nativemoon/services/badge.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendeePage extends StatefulWidget {
@@ -116,8 +116,8 @@ class _AttendeePageState extends State<AttendeePage> {
             Padding(
               padding: EdgeInsets.only(left: 25, right: 25),
               child: Text(
-                // attendee.nick
-                attendee.nick,
+                // attendee.name
+                attendee.name,
                 style: TextStyle(
                     fontSize: 40.0,
                     color: const Color(0xFF000000),
@@ -129,8 +129,7 @@ class _AttendeePageState extends State<AttendeePage> {
             Padding(
               padding: EdgeInsets.only(top: 0, bottom: 30),
               child: Text(
-                // attendee.email
-                'temporary@email.com',
+                attendee.email,
                 style: TextStyle(
                     fontSize: 20.0,
                     color: const Color(0xFF000000),
@@ -156,74 +155,77 @@ class _AttendeePageState extends State<AttendeePage> {
   }
 
   Widget build(BuildContext build) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: Text("Attendee"),
-        backgroundColor: Colors.cyan[900],
-      ),
-      body: drawBody(),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("ENEI"),
-              accountEmail: Text("tecnologia@enei.pt"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  "ENEI",
-                  style: TextStyle(fontSize: 25.0, color: Colors.cyan[900]),
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: new Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text("Attendee"),
+          backgroundColor: Colors.cyan[900],
+        ),
+        body: drawBody(),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text("ENEI"),
+                accountEmail: Text("tecnologia@enei.pt"),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Text(
+                    "ENEI",
+                    style: TextStyle(fontSize: 25.0, color: Colors.cyan[900]),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.cyan[900],
                 ),
               ),
-              decoration: BoxDecoration(
-                color: Colors.cyan[900],
-              ),
-            ),
-            ListTile(
-                title: Row(
-                  children: <Widget>[
-                    Icon(Icons.lock_open, color: Colors.cyan[900]),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text("Badges",
-                          style: TextStyle(color: Colors.cyan[900])),
-                    )
-                  ],
-                ),
-                trailing: Icon(Icons.arrow_forward),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, "/Home");
-                }),
-            Container(
-              decoration: BoxDecoration(color: Colors.orange[800]),
-              child: ListTile(
-                title: Row(
-                  children: <Widget>[
-                    Icon(Icons.person_outline, color: Colors.white),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "Attendee",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
+              ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(Icons.lock_open, color: Colors.cyan[900]),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text("Badges",
+                            style: TextStyle(color: Colors.cyan[900])),
+                      )
+                    ],
+                  ),
+                  trailing: Icon(Icons.arrow_forward),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, "/Home");
+                  }),
+              Container(
+                decoration: BoxDecoration(color: Colors.orange[800]),
+                child: ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(Icons.person_outline, color: Colors.white),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          "Attendee",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   void scanQRCode() async {
-    String link = await scanner.scan();
+    String link = await FlutterBarcodeScanner.scanBarcode("#006064", "Cancel", true, ScanMode.QR);
 
     RegExp regExp = new RegExp(
-      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
+      ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
       caseSensitive: false,
       multiLine: false,
     );
@@ -256,10 +258,10 @@ class _AttendeePageState extends State<AttendeePage> {
   }
 
   void scanQRCodeforBadges() async {
-    String link = await scanner.scan();
+    String link = await FlutterBarcodeScanner.scanBarcode("#006064", "Cancel", true, ScanMode.QR);
 
     RegExp regExp = new RegExp(
-      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
+      ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
       caseSensitive: false,
       multiLine: false,
     );

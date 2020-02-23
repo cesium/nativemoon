@@ -89,6 +89,7 @@ class HomePageState extends State<HomePage> {
     
     if (this.badges == null) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Badges',
         home: Scaffold(
           appBar: AppBar(
@@ -119,12 +120,16 @@ class HomePageState extends State<HomePage> {
             ' ' +
             this.badges[i].end.substring(11, 19));
 
-        //if (!(startDate.isAfter(DateTime.now()) ||
-           // endDate.isBefore(DateTime.now()))) {
+        if (!(startDate.isAfter(DateTime.now()) ||
+           endDate.isBefore(DateTime.now()))) {
         filteredBadges.add(this.badges[i]);
+        }
       }
 
-        return MaterialApp(
+        return new WillPopScope(
+          onWillPop: () async => false,
+          child: new MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Badges',
             home: Scaffold(
               appBar: AppBar(
@@ -194,6 +199,7 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             )
+          ),
         );
     }
   }

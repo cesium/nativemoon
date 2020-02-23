@@ -14,11 +14,17 @@ class AttendeeBadgesState extends StatelessWidget {
   Widget build(BuildContext context) {
     if (this.badges == null) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Badges',
         home: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: true,
             title: Text('Attendee Badges'),
             backgroundColor: Colors.cyan[900],
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context, false),
+            ),
           ),
           body: Container(
             color: Colors.cyan[900],
@@ -38,11 +44,17 @@ class AttendeeBadgesState extends StatelessWidget {
       }
 
       return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Badges',
           home: Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: true,
               title: Text('Attendee Badges'),
               backgroundColor: Colors.cyan[900],
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context, false),
+              )
             ),
             body: GridView.count(
               crossAxisCount: 2,

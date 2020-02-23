@@ -4,13 +4,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nativemoon/services/badge.dart';
 
 class Attendee {
-  final String nick;
+  final String name;
   final String avatar;
+  final String email;
 
-  Attendee({this.nick, this.avatar});
+
+  Attendee({this.name, this.avatar, this.email});
 
   factory Attendee.fromJson(Map<String, dynamic> json) {
-    return Attendee(nick: json['nickname'], avatar: json['avatar']);
+    return Attendee(name: json['name'], avatar: json['avatar'], email: json['email']);
   }
 }
 
@@ -28,7 +30,7 @@ class Badges{
 Future<Attendee> fetchAttendee(String token, String id) async {
   print(token);
   final response = await http.get(
-    DotEnv().env['API_URL'] + '/api/v1/attendees/' + id,
+    DotEnv().env['API_URL'] + 'api/v1/attendees/' + id,
     headers: {"Authorization": "Bearer " + token},
   );
 
@@ -44,7 +46,7 @@ Future<Attendee> fetchAttendee(String token, String id) async {
 Future<List<Badge>> fetchAttendeeBadges(String token, String id) async {
   print(token);
   final response = await http.get(
-    DotEnv().env['API_URL'] + '/api/v1/attendees/' + id,
+    DotEnv().env['API_URL'] + 'api/v1/attendees/' + id,
     headers: {"Authorization": "Bearer " + token},
   );
 

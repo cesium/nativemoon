@@ -27,8 +27,10 @@ dependencies:
   flutter_dotenv:
   shared_preferences: 
   loading: ^1.0.1
-  qrscan: ^0.2.17
-  auto_size_text: ^2.1.0   
+  auto_size_text: ^2.1.0  
+  flutter_barcode_scanner: ^0.1.7
+  vibration:
+ 
 
 dev_dependencies:
   flutter_test:

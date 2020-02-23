@@ -5,9 +5,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nativemoon/screens/Badge/errors.dart';
 import 'package:nativemoon/services/badge.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:vibration/vibration.dart';
 
 class BadgePage extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _BadgePageState extends State<BadgePage> {
   Widget build(BuildContext build) {
     final Badge badge = ModalRoute.of(build).settings.arguments;
 
-    return Scaffold(
+    return new Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: true,
           title: Text("Redeem badge"),
@@ -100,6 +101,17 @@ class _BadgePageState extends State<BadgePage> {
                                     fontWeight: FontWeight.w300,
                                     fontFamily: "Roboto")),
                           ),
+                          new RaisedButton(
+                            key: null,
+                            onPressed: () => scanQRCodeContinuously(badge.id),
+                            color: Colors.orange[200],
+                            child: new Text("Multiple Scans",
+                                style: new TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "Roboto")),
+                          ),
                         ]),
                       )
                     : new Center(
@@ -128,33 +140,71 @@ class _BadgePageState extends State<BadgePage> {
 
   dynamic sendRequest(String userId, int badgeId) async {
     // get auth token
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString('token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
 
-      // set request params
-      var body = {
-        "redeem": {"attendee_id": userId, "badge_id": badgeId.toString()}
-      };
-      String jsonBody = json.encode(body);
-      print(jsonBody);
-      final encoding = Encoding.getByName('utf-8');
+    // set request params
+    var body = {
+      "redeem": {"attendee_id": userId, "badge_id": badgeId.toString()}
+    };
+    String jsonBody = json.encode(body);
+    print(jsonBody);
+    final encoding = Encoding.getByName('utf-8');
 
-      // send request
-      return await http.post(
-          DotEnv().env['API_URL'] + 'api/v1/redeems',
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: jsonBody,
-          encoding: encoding);
+    // send request
+    return await http.post(DotEnv().env['API_URL'] + 'api/v1/redeems',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: jsonBody,
+        encoding: encoding);
+  }
+
+  scanQRCodeContinuously(int badgeId) {
+    FlutterBarcodeScanner.getBarcodeStreamReceiver(
+            "#006064", "Cancel", true, ScanMode.QR)
+        .listen((link) async {
+      RegExp regExp = new RegExp(
+        ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
+        caseSensitive: false,
+        multiLine: false,
+      );
+
+      // check if link is valid
+      if (regExp.hasMatch(link)) {
+        List<String> vars = link.split("/");
+        String userId = vars[vars.length - 1];
+
+        final response = await sendRequest(userId, badgeId);
+
+        // change screen state regarding request result
+        if (response.statusCode == 201) {
+          if (await Vibration.hasVibrator()) {
+            // long vibrate : correct
+            Vibration.vibrate(duration: 1000);
+          }
+        } else {
+          if (await Vibration.hasVibrator()) {
+            // double vibrate : error
+            Vibration.vibrate(pattern: [0, 500, 250, 500]);
+          }
+        }
+      } else {
+        if (await Vibration.hasVibrator()) {
+          // double vibrate : error
+          Vibration.vibrate(pattern: [0, 500, 250, 500]);
+        }
+      }
+    });
   }
 
   void scanQRCode(int badgeId) async {
-    String link = await scanner.scan();
+    String link = await FlutterBarcodeScanner.scanBarcode(
+        "#006064", "Cancel", true, ScanMode.QR);
 
     RegExp regExp = new RegExp(
-      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
+      ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
       caseSensitive: false,
       multiLine: false,
     );
