@@ -8,6 +8,7 @@ import 'package:nativemoon/services/badge.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:vibration/vibration.dart';
 
 class BadgePage extends StatefulWidget {
   @override
@@ -31,173 +32,173 @@ class _BadgePageState extends State<BadgePage> {
     final Badge badge = ModalRoute.of(build).settings.arguments;
 
     return new Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: true,
-            title: Text("Redeem badge"),
-            backgroundColor: Colors.cyan[900],
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(build, false),
-            )),
-        body: new Container(
-          child: new Center(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: new Image.network(
-                    badge.avatar,
-                    width: 200.0,
-                    height: 200.0,
-                  ),
+      appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text("Redeem badge"),
+          backgroundColor: Colors.cyan[900],
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(build, false),
+          )),
+      body: new Container(
+        child: new Center(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: new Image.network(
+                  badge.avatar,
+                  width: 200.0,
+                  height: 200.0,
                 ),
-                new Padding(
-                  padding: EdgeInsets.only(top: 15, left: 25, right: 25),
-                  child: new AutoSizeText(
-                    badge.name,
+              ),
+              new Padding(
+                padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+                child: new AutoSizeText(
+                  badge.name,
+                  style: new TextStyle(
+                      fontSize: 25.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w800,
+                      fontFamily: "Roboto"),
+                  maxLines: 1,
+                ),
+              ),
+              new Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 20),
+                child: new Text(badge.description,
                     style: new TextStyle(
-                        fontSize: 25.0,
+                        fontSize: 16.0,
                         color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w800,
-                        fontFamily: "Roboto"),
-                    maxLines: 1,
-                  ),
-                ),
-                new Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 20),
-                  child: new Text(badge.description,
-                      style: new TextStyle(
-                          fontSize: 16.0,
-                          color: const Color(0xFF000000),
-                          fontWeight: FontWeight.w100,
-                          fontFamily: "Roboto")),
-                ),
-                new Padding(
-                  padding: EdgeInsets.only(top: 75),
-                  child: !isLoading
-                      ? new Center(
-                          child: new Column(children: <Widget>[
-                            new RaisedButton(
-                              key: null,
-                              onPressed: () => scanQRCode(badge.id),
-                              color: Colors.orange[200],
-                              child: new Text("Scan QR Code",
-                                  style: new TextStyle(
-                                      fontSize: 16.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Roboto")),
-                            ),
+                        fontWeight: FontWeight.w100,
+                        fontFamily: "Roboto")),
+              ),
+              new Padding(
+                padding: EdgeInsets.only(top: 75),
+                child: !isLoading
+                    ? new Center(
+                        child: new Column(children: <Widget>[
+                          new RaisedButton(
+                            key: null,
+                            onPressed: () => scanQRCode(badge.id),
+                            color: Colors.orange[200],
+                            child: new Text("Scan QR Code",
+                                style: new TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "Roboto")),
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: new Text(statusText,
+                                style: new TextStyle(
+                                    fontSize: 16.0,
+                                    color: statusColor,
+                                    fontWeight: FontWeight.w300,
+                                    fontFamily: "Roboto")),
+                          ),
+                          new RaisedButton(
+                            key: null,
+                            onPressed: () => scanQRCodeContinuously(badge.id),
+                            color: Colors.orange[200],
+                            child: new Text("Multiple Scans",
+                                style: new TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "Roboto")),
+                          ),
+                        ]),
+                      )
+                    : new Center(
+                        child: new Column(
+                          children: <Widget>[
+                            new CircularProgressIndicator(),
                             new Padding(
                               padding: EdgeInsets.only(top: 10),
-                              child: new Text(statusText,
+                              child: new Text("Redeeming badge...",
                                   style: new TextStyle(
                                       fontSize: 16.0,
-                                      color: statusColor,
-                                      fontWeight: FontWeight.w300,
+                                      color: const Color(0xFF000000),
+                                      fontWeight: FontWeight.w100,
                                       fontFamily: "Roboto")),
                             ),
-                            new RaisedButton(
-                              key: null,
-                              onPressed: () => scanQRCodeContinuously(badge.id),
-                              color: Colors.orange[200],
-                              child: new Text("Multiple Scans",
-                                  style: new TextStyle(
-                                      fontSize: 16.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Roboto")),
-                            ),
-                          ]),
-                        )
-                      : new Center(
-                          child: new Column(
-                            children: <Widget>[
-                              new CircularProgressIndicator(),
-                              new Padding(
-                                padding: EdgeInsets.only(top: 10),
-                                child: new Text("Redeeming badge...",
-                                    style: new TextStyle(
-                                        fontSize: 16.0,
-                                        color: const Color(0xFF000000),
-                                        fontWeight: FontWeight.w100,
-                                        fontFamily: "Roboto")),
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
-                ),
-              ],
-            ),
+                      ),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 
   dynamic sendRequest(String userId, int badgeId) async {
     // get auth token
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString('token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
 
-      // set request params
-      var body = {
-        "redeem": {"attendee_id": userId, "badge_id": badgeId.toString()}
-      };
-      String jsonBody = json.encode(body);
-      print(jsonBody);
-      final encoding = Encoding.getByName('utf-8');
+    // set request params
+    var body = {
+      "redeem": {"attendee_id": userId, "badge_id": badgeId.toString()}
+    };
+    String jsonBody = json.encode(body);
+    print(jsonBody);
+    final encoding = Encoding.getByName('utf-8');
 
-      // send request
-      return await http.post(
-          DotEnv().env['API_URL'] + 'api/v1/redeems',
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: jsonBody,
-          encoding: encoding);
+    // send request
+    return await http.post(DotEnv().env['API_URL'] + 'api/v1/redeems',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: jsonBody,
+        encoding: encoding);
   }
 
   scanQRCodeContinuously(int badgeId) {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver("#006064", "Cancel", true, ScanMode.QR)
-         .listen((link) async { 
+    FlutterBarcodeScanner.getBarcodeStreamReceiver(
+            "#006064", "Cancel", true, ScanMode.QR)
+        .listen((link) async {
+      RegExp regExp = new RegExp(
+        ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
+        caseSensitive: false,
+        multiLine: false,
+      );
 
-           RegExp regExp = new RegExp(
-            ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
-            caseSensitive: false,
-            multiLine: false,
-          );
+      // check if link is valid
+      if (regExp.hasMatch(link)) {
+        List<String> vars = link.split("/");
+        String userId = vars[vars.length - 1];
 
-          // check if link is valid
-          if (regExp.hasMatch(link)) {
-            List<String> vars = link.split("/");
-            String userId = vars[vars.length - 1];
+        final response = await sendRequest(userId, badgeId);
 
-
-            final response = await sendRequest(userId, badgeId);
-
-            // change screen state regarding request result
-            if (response.statusCode == 201) {
-              final snackBar = SnackBar(content: Text('Badge redeemed successfully.'));
-              Scaffold.of(context).showSnackBar(snackBar);
-            } else {
-              Errors errors = new Errors.fromJson(json.decode(response.body));
-              Results res = errors.results;
-              final snackBar = SnackBar(content: Text(res.detail != null ? res.detail : res.msgs[0]));
-              Scaffold.of(context).showSnackBar(snackBar);
-            }
-          } else {
-            final snackBar = SnackBar(content: Text('Invalid QR Code.'));
-            Scaffold.of(context).showSnackBar(snackBar);
+        // change screen state regarding request result
+        if (response.statusCode == 201) {
+          if (await Vibration.hasVibrator()) {
+            Vibration.vibrate();
           }
-      });
+        } else {
+          if (await Vibration.hasVibrator()) {
+            Vibration.vibrate();
+          }
+        }
+      } else {
+        if (await Vibration.hasVibrator()) {
+          Vibration.vibrate();
+        }
+      }
+    });
   }
 
   void scanQRCode(int badgeId) async {
-    String link = await FlutterBarcodeScanner.scanBarcode("#006064", "Cancel", true, ScanMode.QR);
+    String link = await FlutterBarcodeScanner.scanBarcode(
+        "#006064", "Cancel", true, ScanMode.QR);
 
     RegExp regExp = new RegExp(
       ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
@@ -241,4 +242,3 @@ class _BadgePageState extends State<BadgePage> {
     });
   }
 }
-

@@ -29,6 +29,7 @@ dependencies:
   loading: ^1.0.1
   auto_size_text: ^2.1.0  
   flutter_barcode_scanner: ^0.1.7
+  vibration:
  
 
 dev_dependencies:

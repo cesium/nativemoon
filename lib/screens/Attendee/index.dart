@@ -4,6 +4,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:nativemoon/components/popUpAlert.dart';
 import 'package:nativemoon/screens/Attendee/badges.dart';
 import 'package:nativemoon/services/attendee.dart';
+import 'package:nativemoon/services/badge.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendeePage extends StatefulWidget {
@@ -115,8 +116,8 @@ class _AttendeePageState extends State<AttendeePage> {
             Padding(
               padding: EdgeInsets.only(left: 25, right: 25),
               child: Text(
-                // attendee.nick
-                attendee.nick,
+                // attendee.name
+                attendee.name,
                 style: TextStyle(
                     fontSize: 40.0,
                     color: const Color(0xFF000000),
@@ -128,8 +129,7 @@ class _AttendeePageState extends State<AttendeePage> {
             Padding(
               padding: EdgeInsets.only(top: 0, bottom: 30),
               child: Text(
-                // attendee.email
-                'temporary@email.com',
+                attendee.email,
                 style: TextStyle(
                     fontSize: 20.0,
                     color: const Color(0xFF000000),
@@ -258,10 +258,10 @@ class _AttendeePageState extends State<AttendeePage> {
   }
 
   void scanQRCodeforBadges() async {
-    String link = await scanner.scan();
+    String link = await FlutterBarcodeScanner.scanBarcode("#006064", "Cancel", true, ScanMode.QR);
 
     RegExp regExp = new RegExp(
-      ".*https:\/\/moonstone.seium.org\/user\/(([A-Za-z0-9]+-*)+)",
+      ".*https:\/\/enei.pt\/user\/(([A-Za-z0-9]+-*)+)",
       caseSensitive: false,
       multiLine: false,
     );

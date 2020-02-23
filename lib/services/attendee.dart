@@ -4,13 +4,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nativemoon/services/badge.dart';
 
 class Attendee {
-  final String nick;
+  final String name;
   final String avatar;
+  final String email;
 
-  Attendee({this.nick, this.avatar});
+
+  Attendee({this.name, this.avatar, this.email});
 
   factory Attendee.fromJson(Map<String, dynamic> json) {
-    return Attendee(nick: json['nickname'], avatar: json['avatar']);
+    return Attendee(name: json['name'], avatar: json['avatar'], email: json['email']);
   }
 }
 
